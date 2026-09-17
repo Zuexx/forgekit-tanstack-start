@@ -1,6 +1,52 @@
 # --- dependencies ---
 node_modules/
 
+# --- .NET (C#) ---
+*.swp
+*.*~
+project.lock.json
+appsettings.Local.json
+!appsettings.*.example
+appsettings.Staging.json
+appsettings.Production.json
+/data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+# On a case-insensitive filesystem (macOS/Windows default, core.ignorecase=true) the *.sqlite
+# glob above also matches the ForgeKit.Api.Migrations.Sqlite project directory, silently
+# excluding any new file added under it that was not already force-added. Re-include it.
+!api/ForgeKit.Api.Migrations.Sqlite/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+debug.log
+[Ll]ogs/
+
+/api/.vs
+
 # --- AI tooling (local only, never committed) ---
 # CodeGraph local symbol index — regenerate with `pnpm exec codegraph index`
 .codegraph/
