@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { StyleXProbe } from '#/shared/styles/probe'
+import { StyleXProbe } from '#/shared/ui/probe'
 
 export const Route = createFileRoute('/')({ component: Home })
 
