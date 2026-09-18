@@ -69,7 +69,14 @@ describe('useSyncAuthSession', () => {
 
   it('does not touch the store while the session is still loading', () => {
     vi.mocked(authClient.useSession).mockReturnValue({
-      data: null,
+      data: {
+        user: {
+          id: '1',
+          name: 'Ada',
+          email: 'ada@example.com',
+          image: null,
+        },
+      },
       isPending: true,
     } as ReturnType<typeof authClient.useSession>)
 
