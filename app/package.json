@@ -17,12 +17,14 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@stylexjs/stylex": "0.19.1",
     "@tanstack/react-router": "latest",
     "@tanstack/react-start": "latest",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@stylexjs/unplugin": "0.19.1",
     "@tanstack/eslint-config": "latest",
     "@tanstack/router-cli": "^1.132.0",
     "@types/node": "^22.10.2",

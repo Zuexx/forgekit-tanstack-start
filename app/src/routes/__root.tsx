@@ -21,6 +21,9 @@ export const Route = createRootRoute({
         rel: 'stylesheet',
         href: appCss,
       },
+      ...(import.meta.env.DEV
+        ? [{ rel: 'stylesheet', href: '/virtual:stylex.css' }]
+        : []),
     ],
   }),
   shellComponent: RootDocument,
@@ -31,6 +34,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {import.meta.env.DEV && (
+          <script type="module" src="/@id/virtual:stylex:runtime" />
+        )}
       </head>
       <body>
         {children}
