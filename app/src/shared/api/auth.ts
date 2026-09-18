@@ -1,11 +1,14 @@
-// load-root-env.ts also loads this file, and ES module evaluation order means its call
-// runs before this one either way. This import exists so the guarantee does not quietly
-// depend on that: normalizeProvider below reads Database__Provider on the assumption it is
-// already loaded, and that has to hold even if an adapter stops loading it — dotenv's
-// config does not override an already-set variable, so loading it again here is a safe
-// no-op today. A plain import, not an inline config() call, per Task 1's Step 3 note on
-// why this repo's import/first lint rule needs the side effect isolated this way.
+// Both loaders are imported directly here rather than relied upon as a side effect of the
+// db adapters below. normalizeProvider reads Database__Provider (from load-root-env), and the
+// betterAuth config below reads BETTER_AUTH_SECRET, BETTER_AUTH_URL, BETTER_AUTH_ADMIN_USER_IDS,
+// BETTER_AUTH_TRUSTED_ORIGINS, and the AZURE_AD_* vars (from load-local-env) — none of that can
+// depend on postgres.ts/mssql.ts happening to import load-local-env themselves, since those
+// imports could become conditional or lazy. dotenv's config does not override an already-set
+// variable, so importing both loaders again here (postgres.ts and mssql.ts also import
+// load-local-env) is always a safe no-op. Plain imports, not inline config() calls, per Task 1's
+// Step 3 note on why this repo's import/first lint rule needs the side effect isolated this way.
 import './db/load-root-env'
+import './db/load-local-env'
 
 import { betterAuth } from 'better-auth'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
