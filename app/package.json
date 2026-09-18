@@ -20,6 +20,7 @@
   "dependencies": {
     "@base-ui/react": "^1.8.0",
     "@stylexjs/stylex": "0.19.1",
+    "@tanstack/react-query": "^5.103.1",
     "@tanstack/react-router": "latest",
     "@tanstack/react-start": "latest",
     "@tanstack/react-table": "^9.2.4",
@@ -30,6 +31,7 @@
     "@feature-sliced/steiger-plugin": "0.7.0",
     "@stylexjs/unplugin": "0.19.1",
     "@tanstack/eslint-config": "latest",
+    "@tanstack/react-query-devtools": "^5.103.1",
     "@tanstack/router-cli": "^1.132.0",
     "@types/node": "^22.10.2",
     "@types/react": "^19.2.0",
