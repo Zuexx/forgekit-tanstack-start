@@ -1,4 +1,4 @@
-import { createAuthClient } from 'better-auth/client'
+import { createAuthClient } from 'better-auth/react'
 import { adminClient } from 'better-auth/client/plugins'
 
 const { BETTER_AUTH_URL } = process.env

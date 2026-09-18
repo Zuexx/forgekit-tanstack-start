@@ -7,9 +7,6 @@ describe('authClient', () => {
     expect(typeof authClient.signUp.email).toBe('function')
     expect(typeof authClient.signOut).toBe('function')
     expect(typeof authClient.getSession).toBe('function')
-    // useSession is a Zustand store object in Better Auth 1.7.5, not a function
-    expect(typeof authClient.useSession).toBe('object')
-    expect(typeof (authClient.useSession as any).subscribe).toBe('function')
-    expect(typeof (authClient.useSession as any).get).toBe('function')
+    expect(typeof authClient.useSession).toBe('function')
   })
 })
