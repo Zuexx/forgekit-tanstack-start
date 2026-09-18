@@ -1,5 +1,4 @@
 {
-  "//": "Starting point for a new ForgeKit-family repository. Copy to the repo root and fill in name, sourceGlobs, and requiredTools. This file is a template, not a synced file: each repository's dependency versions live in its own lockfile and are bumped independently by dependabot.",
   "name": "forgekit-tanstack-start",
   "private": true,
   "packageManager": "pnpm@11.1.1",
@@ -18,8 +17,8 @@
     "verify": "bash scripts/verify.sh"
   },
   "devDependencies": {
-    "@colbymchenry/codegraph": "^1.5.0",
-    "@fission-ai/openspec": "^1.9.0",
+    "@colbymchenry/codegraph": "^1.6.0",
+    "@fission-ai/openspec": "^1.13.1",
     "grillme": "latest"
   }
 }
