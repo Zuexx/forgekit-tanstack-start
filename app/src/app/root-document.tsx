@@ -1,5 +1,11 @@
 import { HeadContent, Scripts } from '@tanstack/react-router'
-import { QueryProvider } from '#/shared/api'
+import { QueryProvider, useSyncAuthSession } from '#/shared/api'
+import { StateProvider } from '#/shared/state'
+
+function AuthSessionSync({ children }: { children: React.ReactNode }) {
+  useSyncAuthSession()
+  return <>{children}</>
+}
 
 export function RootDocument({ children }: { children: React.ReactNode }) {
   return (
@@ -11,7 +17,11 @@ export function RootDocument({ children }: { children: React.ReactNode }) {
         )}
       </head>
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <StateProvider>
+          <QueryProvider>
+            <AuthSessionSync>{children}</AuthSessionSync>
+          </QueryProvider>
+        </StateProvider>
 
         <Scripts />
       </body>
