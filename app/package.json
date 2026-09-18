@@ -18,9 +18,11 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@base-ui/react": "^1.8.0",
     "@stylexjs/stylex": "0.19.1",
     "@tanstack/react-router": "latest",
     "@tanstack/react-start": "latest",
+    "@tanstack/react-table": "^9.2.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
