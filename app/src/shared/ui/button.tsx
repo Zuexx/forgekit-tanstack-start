@@ -6,8 +6,8 @@ import { useRender } from '@base-ui/react/use-render'
 import { create, props as stylexProps } from '@stylexjs/stylex'
 import type { StyleXStyles } from '@stylexjs/stylex'
 
-import { colors, radius } from '@/shared/lib/tokens.stylex'
-import { customClassName } from '@/shared/lib/utils.stylex'
+import { colors, radius } from '#/shared/lib/tokens.stylex'
+import { customClassName } from '#/shared/lib/utils.stylex'
 
 const styles = create({
   base: {

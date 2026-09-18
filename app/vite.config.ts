@@ -18,12 +18,11 @@ const config = defineConfig({
       },
       // StyleX's babel plugin resolves theme-file imports (defineVars/create
       // consumers) itself, independent of Vite's bundler resolution — so the
-      // `#/*` (package.json "imports") and `@/*` (tsconfig paths) aliases used
-      // elsewhere in this repo need to be spelled out here too, or any
-      // aliased import inside a `stylex.create()` call site fails to resolve.
+      // `#/*` (package.json "imports") alias used elsewhere in this repo
+      // needs to be spelled out here too, or any aliased import inside a
+      // `stylex.create()` call site fails to resolve.
       aliases: {
         '#/*': ['/ROOT/src/*'],
-        '@/*': ['/ROOT/src/*'],
       },
     }),
     tanstackStart(),

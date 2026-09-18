@@ -4,8 +4,8 @@ import * as stylex from '@stylexjs/stylex'
 import type { StyleXStyles } from '@stylexjs/stylex'
 import * as React from 'react'
 
-import { colors } from '@/shared/lib/tokens.stylex'
-import { customClassName } from '@/shared/lib/utils.stylex'
+import { colors } from '#/shared/lib/tokens.stylex'
+import { customClassName } from '#/shared/lib/utils.stylex'
 
 const styles = stylex.create({
   body: {

@@ -10,7 +10,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/shared/ui/table'
+} from '#/shared/ui/table'
 
 // No optional behaviors (sorting, filtering, pagination, ...) are registered
 // yet -- this is the minimal feature set. The core row model is always
