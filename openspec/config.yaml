@@ -5,37 +5,86 @@ context: |
   `forgekit` (the .NET + Next.js starter): products are generated from it and then diverge.
   Changes should stay reusable across products, not tailored to the sample TODO domain.
 
-  ## Stack (placeholder — Task 3 onward makes this concrete)
+  ## Stack
 
-  - Backend: .NET 10 / ASP.NET Core minimal API via Anvil, forked from `forgekit`'s
-    `api/Anvil/` shared layer (not shared at runtime; kept in sync with
-    `git checkout upstream/main -- api/Anvil`, `forgekit` as the upstream remote for that
-    path only)
-  - Frontend: TanStack Start, TypeScript, strict Feature-Sliced Design (FSD) layering
-    (`shared/` → `entities/` → `features/` → `widgets/` → `pages/`), linted by `steiger`
-  - Styling: StyleX via `shadcn-cssinjs` (Base UI primitives + StyleX component registry),
-    wired in with `@stylexjs/unplugin`
-  - Data layer: TanStack Query and TanStack Table, called from TanStack Start server
-    functions (no separate Hono BFF layer)
+  - Backend: .NET 10 / ASP.NET Core minimal API via Anvil, EF Core, MediatR, FluentValidation,
+    JWT Bearer auth, Serilog, Scalar for OpenAPI — forked from `forgekit`'s `api/Anvil/`
+    shared layer (not shared at runtime)
+  - Frontend: TanStack Start (Vite-based), TypeScript, React 19, TanStack Router (file-based
+    routing under `app/src/routes/`)
+  - Styling: StyleX (`@stylexjs/stylex`) via `shadcn-cssinjs` (Base UI primitives + StyleX
+    component registry), wired in with `@stylexjs/unplugin`
+  - Data layer: TanStack Query for server state and TanStack Table for tabular UI, called
+    from TanStack Start server functions (no separate Hono BFF layer); Zustand for
+    client-only state, under `app/src/shared/state/`
+  - Database: SQLite by default; PostgreSQL and SQL Server are supported provider options
 
-  ## Layer boundary (read before touching api/, once it exists)
+  ## Anvil sync boundary (read before touching api/)
 
-  - `api/Anvil/` is the shared layer forked from `forgekit`. It MUST NOT reference the
-    product project, and stays in sync via the `upstream` remote pointed at `forgekit`.
-  - `api/ForgeKit.Api/` (or equivalent product project) is the product layer.
+  The API is split so base improvements can reach already-generated products, mirroring
+  `forgekit`'s own convention:
+
+  - `api/Anvil/` is the shared layer forked from `forgekit`. Its paths are identical to
+    `forgekit`'s, so it stays in sync with `git checkout upstream/main -- api/Anvil` (the
+    `upstream` remote points at `forgekit`). It MUST NOT reference the product project. See
+    `docs/ANVIL_SYNC.md` for the sync procedure and review steps.
+  - `api/ForgeKit.Api/` is the product layer and is renamed per product.
+
+  ## FSD layer boundary (read before touching app/src/)
+
+  The frontend follows strict Feature-Sliced Design, enforced by `steiger`
+  (`pnpm lint:fsd`, run against `app/src/`). Six layers, imports only flow downward from a
+  higher layer to a lower one:
+
+  - `app/` — app-wide setup: providers and root composition (`src/app/init/`)
+  - `pages/` — route-level compositions, composed into TanStack Router's routes
+  - `widgets/` — composite UI blocks combining multiple features/entities
+  - `features/` — user-facing actions (a form, a toggle, a single interaction)
+  - `entities/` — business entities and their UI/data
+  - `shared/` — reusable, business-agnostic code: `shared/ui/`, `shared/api/`, `shared/lib/`,
+    `shared/state/` (Zustand stores), `shared/styles/`
+
+  `src/routes/` holds TanStack Router's generated file-based route tree; it sits outside the
+  FSD layers and composes `pages/` slices rather than containing feature logic itself.
 
   ## Conventions
 
-  - Frontend layering: strict FSD, enforced by `steiger`; imports only flow downward
-    through the FSD layers.
+  - Backend architecture: modules expose endpoints, MediatR handlers hold request logic,
+    services and domain services hold behavior, EF Core is used directly rather than behind
+    repositories (ADR-004, inherited from `forgekit`). Results use the Result pattern
+    (ADR-006); exceptions are mapped centrally by middleware.
+  - Soft delete is global: entities implementing `ISoftDelete` get a query filter applied by
+    `PlatformDbContext` automatically (ADR-002, inherited from `forgekit`).
+  - Migrations are provider-specific (`ForgeKit.Api.Migrations.{Sqlite,Postgres,SqlServer}`).
+    When the EF model changes, add migrations for all three provider projects; never reuse
+    one provider's migrations for another.
+  - Styling: components are styled with StyleX, composed through the `shadcn-cssinjs`
+    registry on top of Base UI primitives — no Tailwind, no CSS modules.
+  - Data fetching: TanStack Query owns server state; TanStack Table owns tabular UI. Client
+    state that needs to be read across slices lives in a Zustand store under `shared/state/`,
+    not component state — see Task 8's store wiring for the pattern.
+  - Tests: xUnit with Shouldly for the API (unit tests for handlers, validators, and domain
+    logic; SQLite for relational integration tests). Frontend uses vitest for units.
   - Commits follow Conventional Commits.
   - Branch off main as `feature/`, `fix/`, `chore/`, or `refactor/`; open a PR so CI runs
     before merging — this repo's branch protection rejects direct pushes to `main` and
     requires a real merge commit (`git merge` / `gh pr merge --merge`), never squash or
     rebase.
 
-  This block is a placeholder naming the stack; Task 3 onward will scaffold the actual
-  app and make this concrete (structure, layer boundary detail, testing conventions, etc.).
+  ## Constraints
+
+  - Breaking API changes require a change proposal.
+  - Do not commit local secrets. `appsettings.Local.json` and `.env.local` are ignored and
+    have committed `.example` counterparts.
+  - The API and the frontend share one database provider selection (root `.env`'s
+    `Database__Provider`); both default to SQLite, sharing one instance with logically
+    separate schemas.
+
+  ## Reference docs
+
+  - `docs/ANVIL_SYNC.md` — syncing `api/Anvil/` from `forgekit`
+  - `scripts/verify.sh` — the full local/CI verification sequence (API build+test, App
+    check/lint/lint:fsd/test/build, OpenSpec validation, secret scan)
 
 # Per-artifact rules (optional)
 # Add custom rules for specific artifacts.
