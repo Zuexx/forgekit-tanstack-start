@@ -1,5 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
+import { StyleXProbe } from '#/shared/styles/probe'
+
 export const Route = createFileRoute('/')({ component: Home })
 
 function Home() {
@@ -9,6 +11,7 @@ function Home() {
       <p>
         Edit <code>src/routes/index.tsx</code> to get started.
       </p>
+      <StyleXProbe />
     </main>
   )
 }
