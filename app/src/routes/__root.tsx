@@ -1,5 +1,6 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { createRootRoute } from '@tanstack/react-router'
 
+import { RootDocument } from '#/app/root-document'
 import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
@@ -28,21 +29,3 @@ export const Route = createRootRoute({
   }),
   shellComponent: RootDocument,
 })
-
-function RootDocument({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-        {import.meta.env.DEV && (
-          <script type="module" src="/@id/virtual:stylex:runtime" />
-        )}
-      </head>
-      <body>
-        {children}
-
-        <Scripts />
-      </body>
-    </html>
-  )
-}
