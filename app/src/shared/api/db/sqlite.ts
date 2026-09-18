@@ -1,13 +1,8 @@
-import { config } from 'dotenv'
-import { existsSync, mkdirSync } from 'fs'
+import './load-root-env'
+
+import { existsSync, mkdirSync } from 'node:fs'
+import { dirname, resolve as resolvePath } from 'node:path'
 import { Kysely, SqliteDialect } from 'kysely'
-import { dirname, resolve as resolvePath } from 'path'
-
-// Loads the one setting shared by the .NET API and Better Auth — Database__Provider — from
-// the repo-root .env. This file's own path is app/src/shared/api/db/sqlite.ts, five levels
-// below the repo root.
-config({ path: resolvePath(process.cwd(), '..', '.env') })
-
 import BetterSqlite3 from 'better-sqlite3'
 
 import type { DB } from './types'

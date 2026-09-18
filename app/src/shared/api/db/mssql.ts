@@ -1,7 +1,4 @@
-import { config } from 'dotenv'
-import { resolve } from 'path'
-
-config({ path: resolve(process.cwd(), '.env.local') })
+import './load-local-env'
 
 import { Kysely, MssqlDialect } from 'kysely'
 import * as tarn from 'tarn'
