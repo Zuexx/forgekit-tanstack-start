@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { useAppStore } from './index'
+import { createAppStore } from './index'
 
-describe('useAppStore', () => {
+describe('createAppStore', () => {
   it('starts with the expected default state', () => {
-    const state = useAppStore.getState()
+    const store = createAppStore()
+    const state = store.getState()
     expect(state.user).toBeNull()
     expect(state.isAuthenticated).toBe(false)
     expect(state.theme).toBe('light')
@@ -12,16 +13,14 @@ describe('useAppStore', () => {
   })
 
   it('setUser updates user and isAuthenticated together', () => {
-    useAppStore
-      .getState()
-      .setUser({ id: '1', name: 'Ada', email: 'ada@example.com' })
-    const state = useAppStore.getState()
+    const store = createAppStore()
+    store.getState().setUser({ id: '1', name: 'Ada', email: 'ada@example.com' })
+    const state = store.getState()
     expect(state.user).toEqual({
       id: '1',
       name: 'Ada',
       email: 'ada@example.com',
     })
     expect(state.isAuthenticated).toBe(true)
-    useAppStore.getState().logout()
   })
 })

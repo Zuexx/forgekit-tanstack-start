@@ -1,9 +1,9 @@
 import { useShallow } from 'zustand/react/shallow'
 
-import { useAppStore } from './index'
+import { useAppStoreContext } from './state-provider'
 
 export const useUser = () =>
-  useAppStore(
+  useAppStoreContext(
     useShallow((state) => ({
       user: state.user,
       isAuthenticated: state.isAuthenticated,
@@ -14,7 +14,7 @@ export const useUser = () =>
   )
 
 export const useUI = () =>
-  useAppStore(
+  useAppStoreContext(
     useShallow((state) => ({
       theme: state.theme,
       sidebarOpen: state.sidebarOpen,
@@ -26,8 +26,9 @@ export const useUI = () =>
     })),
   )
 
-export const useTheme = () => useAppStore((state) => state.theme)
-export const useSidebarOpen = () => useAppStore((state) => state.sidebarOpen)
-export const useLoading = () => useAppStore((state) => state.loading)
+export const useTheme = () => useAppStoreContext((state) => state.theme)
+export const useSidebarOpen = () =>
+  useAppStoreContext((state) => state.sidebarOpen)
+export const useLoading = () => useAppStoreContext((state) => state.loading)
 export const useIsAuthenticated = () =>
-  useAppStore((state) => state.isAuthenticated)
+  useAppStoreContext((state) => state.isAuthenticated)
