@@ -1,27 +1,26 @@
 // @vitest-environment node
 //
-// require-session.ts imports getRequestHeaders from '@tanstack/react-start/server' (a
-// server-only API). Under the default jsdom environment, TanStack Start's import-protection
-// Vite plugin classifies this file as client-reachable and substitutes its own auto-mock for
-// that import before this file's vi.mock() below ever takes effect, silently returning empty
-// headers no matter what — the "valid cookie" case then falsely redirects. Running this file
-// under the plain 'node' environment sidesteps that client-vs-server classification, so this
-// file's own vi.mock() is the only mock in play, matching the exact test expectations.
+// require-session.ts imports getRequestHeaders/createServerFn from '@tanstack/react-start' —
+// server-only APIs. Under the default jsdom environment, TanStack Start's import-protection
+// Vite plugin classifies this file as client-reachable and intercepts those imports. Running
+// this file under the plain 'node' environment sidesteps that classification. The test only
+// exercises getSessionForHeaders(), the plain-function core — requireSession() itself wraps a
+// createServerFn, which throws "No Start context found in AsyncLocalStorage" when invoked
+// directly outside TanStack Start's real request runtime, so it has no test of its own (same
+// accepted pattern as shared/api/abac/resolve-context.ts).
 import { existsSync, rmSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import type { auth as Auth } from './auth'
+import type { getSessionForHeaders as GetSessionForHeaders } from './require-session'
 
 const TEST_DB_PATH = resolve(process.cwd(), '.require-session-test.db')
 const TEST_TIMEOUT_MS = 15000
 
 let auth: typeof Auth
+let getSessionForHeaders: typeof GetSessionForHeaders
 let sessionCookie: string
-
-vi.mock('@tanstack/react-start/server', () => ({
-  getRequestHeaders: () => new Headers({ cookie: sessionCookie }),
-}))
 
 beforeAll(async () => {
   process.env.SQLITE_DATABASE_PATH = TEST_DB_PATH
@@ -31,6 +30,7 @@ beforeAll(async () => {
   vi.resetModules()
 
   ;({ auth } = await import('./auth'))
+  ;({ getSessionForHeaders } = await import('./require-session'))
 
   const { getMigrations } = await import('better-auth/db/migration')
   const { runMigrations } = await getMigrations(auth.options)
@@ -60,25 +60,16 @@ afterAll(() => {
   if (existsSync(`${TEST_DB_PATH}-shm`)) rmSync(`${TEST_DB_PATH}-shm`)
 })
 
-describe('requireSession', () => {
-  it('returns the session for a valid cookie', async () => {
-    const { requireSession } = await import('./require-session')
+describe('getSessionForHeaders', () => {
+  it('resolves the real session for a valid cookie', async () => {
+    const session = await getSessionForHeaders(new Headers({ cookie: sessionCookie }))
 
-    const result = await requireSession()
-
-    expect(result.user.email).toBe('require-session-test@example.com')
+    expect(session?.user.email).toBe('require-session-test@example.com')
   })
 
-  it('redirects when there is no cookie', async () => {
-    const validCookie = sessionCookie
-    sessionCookie = ''
+  it('resolves to null when there is no cookie', async () => {
+    const session = await getSessionForHeaders(new Headers())
 
-    const { requireSession } = await import('./require-session')
-
-    await expect(requireSession()).rejects.toMatchObject({
-      options: { to: '/sign-in' },
-    })
-
-    sessionCookie = validCookie
+    expect(session).toBeNull()
   })
 })
