@@ -20,10 +20,9 @@ export interface AbacContext {
   environment: Environment
 }
 
-export interface PolicyDecision {
-  effect: Effect
-  to?: string
-}
+export type PolicyDecision =
+  | { effect: 'allow' }
+  | { effect: 'redirect'; to: string }
 
 export interface AbacConfig {
   publicRoutes: string[]

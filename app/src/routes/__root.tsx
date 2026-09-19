@@ -7,10 +7,19 @@ import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
   beforeLoad: async ({ location }) => {
-    const decision = evaluatePolicy(
-      await resolveContext(location.pathname, ABAC_CONFIG),
-    )
-    if (decision.effect === 'redirect' && decision.to) {
+    let decision
+    try {
+      decision = evaluatePolicy(
+        await resolveContext(location.pathname, ABAC_CONFIG),
+      )
+    } catch {
+      // Fail open: this gate is a cheap redirect convenience, not the real authorization
+      // boundary — requireSession() on protected routes is, so letting a transient
+      // resolveContext RPC failure through here (rather than breaking every route,
+      // including public ones) doesn't create a security hole.
+      return
+    }
+    if (decision.effect === 'redirect') {
       throw redirect({ to: decision.to })
     }
   },
