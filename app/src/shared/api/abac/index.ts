@@ -1,5 +1,5 @@
 export { evaluatePolicy } from './evaluate-policy'
-export { resolveContext } from './resolve-context.server'
+export { resolveContext } from './resolve-context'
 export type {
   AbacConfig,
   AbacContext,
