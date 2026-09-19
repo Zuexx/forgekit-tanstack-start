@@ -1,4 +1,6 @@
 import { HeadContent, Scripts } from '@tanstack/react-router'
+import { Toaster } from 'react-hot-toast'
+
 import { QueryProvider, useSyncAuthSession } from '#/shared/api'
 import { StateProvider } from '#/shared/state'
 
@@ -22,6 +24,7 @@ export function RootDocument({ children }: { children: React.ReactNode }) {
             <AuthSessionSync>{children}</AuthSessionSync>
           </QueryProvider>
         </StateProvider>
+        <Toaster position="bottom-right" />
 
         <Scripts />
       </body>

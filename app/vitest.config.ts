@@ -10,6 +10,7 @@ const config = mergeConfig(
       // later tasks (5, 7, 8) can rely on it as a gate rather than a guaranteed failure.
       passWithNoTests: true,
       environment: 'jsdom',
+      setupFiles: ['./vitest.setup.ts'],
       // A few tests do real work (SQLite migrations, bcrypt hashing, RSA keygen for the jwt
       // plugin) that can run past Vitest's 5000ms default under parallel-worker CPU
       // contention — real I/O/CPU cost, not a hang, so the budget is raised globally rather
