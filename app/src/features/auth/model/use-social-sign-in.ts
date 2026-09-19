@@ -1,3 +1,5 @@
+import toast from 'react-hot-toast'
+
 import { authClient } from '#/shared/api'
 
 /**
@@ -7,6 +9,11 @@ import { authClient } from '#/shared/api'
  */
 export function useSocialSignIn() {
   return {
-    signIn: () => authClient.signIn.social({ provider: 'microsoft' }),
+    signIn: async () => {
+      const result = await authClient.signIn.social({ provider: 'microsoft' })
+      if (result.error) {
+        toast.error(result.error.message ?? 'Sign in failed')
+      }
+    },
   }
 }

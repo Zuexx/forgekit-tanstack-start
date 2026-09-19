@@ -9,7 +9,11 @@ export function useSignOut() {
 
   return useMutation({
     mutationFn: () => authClient.signOut(),
-    onSuccess: () => {
+    onSuccess: (result) => {
+      if (result.error) {
+        toast.error('Sign out failed')
+        return
+      }
       toast.success('Signed out')
       router.navigate({ to: '/' })
     },

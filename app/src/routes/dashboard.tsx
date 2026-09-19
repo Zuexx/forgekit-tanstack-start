@@ -6,7 +6,7 @@ import { DashboardPage } from '#/pages/dashboard'
 export const Route = createFileRoute('/dashboard')({
   beforeLoad: async () => {
     const { user } = await requireSession()
-    return { user }
+    return { user: { name: user.name } }
   },
   component: () => {
     const { user } = Route.useRouteContext()
