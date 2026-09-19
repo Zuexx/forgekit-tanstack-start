@@ -57,7 +57,7 @@ importers:
         specifier: ^19.2.0
         version: 19.3.0(react@19.3.0)
       react-hook-form:
-        specifier: ^7.88.0
+        specifier: ^7.87.0
         version: 7.88.0(react@19.3.0)
       react-hot-toast:
         specifier: ^2.6.1
