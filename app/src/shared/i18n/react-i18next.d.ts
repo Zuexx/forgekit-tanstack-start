@@ -6,7 +6,7 @@ import type form from './locales/en/form.json'
 import type toast from './locales/en/toast.json'
 import type validation from './locales/en/validation.json'
 
-declare module 'react-i18next' {
+declare module 'i18next' {
   interface CustomTypeOptions {
     defaultNS: 'common'
     resources: {

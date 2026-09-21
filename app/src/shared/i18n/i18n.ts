@@ -1,5 +1,4 @@
 import i18next from 'i18next'
-import { initReactI18next } from 'react-i18next'
 
 import type { Locale } from './config'
 import { DEFAULT_LOCALE, NAMESPACES } from './config'
@@ -52,7 +51,7 @@ const resources = {
  */
 export function createI18nInstance(locale: Locale) {
   const instance = i18next.createInstance()
-  void instance.use(initReactI18next).init({
+  void instance.init({
     lng: locale,
     fallbackLng: DEFAULT_LOCALE,
     resources,
