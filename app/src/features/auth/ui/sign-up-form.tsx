@@ -1,20 +1,23 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '#/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '#/shared/ui/card'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '#/shared/ui/field'
 import { Input } from '#/shared/ui/input'
+import { LocaleSwitcher } from '#/shared/ui/locale-switcher'
 
 import { useSignUp } from '../model/use-sign-up'
-import { signUpSchema } from '../model/sign-up-schema'
+import { createSignUpSchema } from '../model/sign-up-schema'
 import type { SignUpInput } from '../model/sign-up-schema'
 
 export function SignUpForm() {
   const signUp = useSignUp()
+  const { t } = useTranslation('validation')
 
   const form = useForm<SignUpInput>({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(createSignUpSchema(t)),
     defaultValues: { name: '', email: '', password: '', confirmPassword: '' },
   })
 
@@ -26,6 +29,7 @@ export function SignUpForm() {
     <Card>
       <CardHeader>
         <CardTitle>Create an account</CardTitle>
+        <LocaleSwitcher />
       </CardHeader>
       <CardContent>
         <form noValidate onSubmit={form.handleSubmit(onSubmit)}>

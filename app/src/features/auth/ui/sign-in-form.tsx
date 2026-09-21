@@ -1,22 +1,25 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '#/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '#/shared/ui/card'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '#/shared/ui/field'
 import { Input } from '#/shared/ui/input'
+import { LocaleSwitcher } from '#/shared/ui/locale-switcher'
 
 import { useSignIn } from '../model/use-sign-in'
 import { useSocialSignIn } from '../model/use-social-sign-in'
-import { signInSchema } from '../model/sign-in-schema'
+import { createSignInSchema } from '../model/sign-in-schema'
 import type { SignInInput } from '../model/sign-in-schema'
 
 export function SignInForm() {
   const signIn = useSignIn()
   const socialSignIn = useSocialSignIn()
+  const { t } = useTranslation('validation')
 
   const form = useForm<SignInInput>({
-    resolver: zodResolver(signInSchema),
+    resolver: zodResolver(createSignInSchema(t)),
     defaultValues: { email: '', password: '' },
   })
 
@@ -28,6 +31,7 @@ export function SignInForm() {
     <Card>
       <CardHeader>
         <CardTitle>Sign in</CardTitle>
+        <LocaleSwitcher />
       </CardHeader>
       <CardContent>
         <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
