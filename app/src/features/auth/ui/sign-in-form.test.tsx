@@ -51,7 +51,7 @@ describe('SignInForm', () => {
     renderWithQuery()
     await userEvent.type(screen.getByLabelText(/email/i), 'a@example.com')
     await userEvent.type(screen.getByLabelText(/password/i), 'abcd1234')
-    await userEvent.click(screen.getByRole('button', { name: /^sign in$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /^login$/i }))
 
     await waitFor(() =>
       expect(authClient.signIn.email).toHaveBeenCalledWith({
@@ -65,7 +65,7 @@ describe('SignInForm', () => {
     renderWithQuery()
     await userEvent.type(screen.getByLabelText(/email/i), 'not-an-email')
     await userEvent.type(screen.getByLabelText(/password/i), 'abcd1234')
-    await userEvent.click(screen.getByRole('button', { name: /^sign in$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /^login$/i }))
 
     expect(await screen.findByText(/valid email address/i)).toBeInTheDocument()
     expect(authClient.signIn.email).not.toHaveBeenCalled()

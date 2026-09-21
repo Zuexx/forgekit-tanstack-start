@@ -17,6 +17,8 @@ export function SignInForm() {
   const signIn = useSignIn()
   const socialSignIn = useSocialSignIn()
   const { t } = useTranslation('validation')
+  const { t: tAuth } = useTranslation('auth')
+  const { t: tForm } = useTranslation('form')
 
   const form = useForm<SignInInput>({
     resolver: zodResolver(createSignInSchema(t)),
@@ -30,7 +32,7 @@ export function SignInForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sign in</CardTitle>
+        <CardTitle>{tAuth('signIn.title')}</CardTitle>
         <LocaleSwitcher />
       </CardHeader>
       <CardContent>
@@ -38,11 +40,11 @@ export function SignInForm() {
           <FieldGroup>
             <Field>
               <Button type="button" variant="outline" onClick={socialSignIn.signIn}>
-                Sign in with Microsoft
+                {tAuth('signIn.loginWithSSO')}
               </Button>
             </Field>
             <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <FieldLabel htmlFor="email">{tForm('email.label')}</FieldLabel>
               <Input id="email" type="email" {...form.register('email')} />
               {form.formState.errors.email && (
                 <FieldDescription role="alert">
@@ -51,7 +53,7 @@ export function SignInForm() {
               )}
             </Field>
             <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <FieldLabel htmlFor="password">{tForm('password.label')}</FieldLabel>
               <Input id="password" type="password" {...form.register('password')} />
               {form.formState.errors.password && (
                 <FieldDescription role="alert">
@@ -60,7 +62,7 @@ export function SignInForm() {
               )}
             </Field>
             <Field>
-              <Button type="submit">Sign in</Button>
+              <Button type="submit">{tAuth('signIn.loginButton')}</Button>
             </Field>
           </FieldGroup>
         </form>
