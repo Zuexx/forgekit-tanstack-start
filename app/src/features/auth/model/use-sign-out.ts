@@ -15,7 +15,7 @@ export function useSignOut() {
         return
       }
       toast.success('Signed out')
-      router.navigate({ to: '/' })
+      router.navigate({ to: '/{-$locale}' })
     },
     onError: () => toast.error('Sign out failed'),
   })

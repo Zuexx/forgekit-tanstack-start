@@ -17,7 +17,7 @@ export function useSignIn() {
         return
       }
       toast.success('Signed in')
-      router.navigate({ to: '/dashboard' })
+      router.navigate({ to: '/{-$locale}/dashboard' })
     },
     onError: () => toast.error('Sign in failed'),
   })

@@ -17,7 +17,7 @@ export function useSignUp() {
         return
       }
       toast.success('Account created')
-      router.navigate({ to: '/dashboard' })
+      router.navigate({ to: '/{-$locale}/dashboard' })
     },
     onError: () => toast.error('Sign up failed'),
   })
