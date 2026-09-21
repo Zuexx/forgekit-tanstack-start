@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
+import type { TFunction } from 'i18next'
 
-import { signUpSchema } from './sign-up-schema'
+import { createSignUpSchema, signUpSchema } from './sign-up-schema'
+
+const stubT = ((key: string, options?: { min?: number }) =>
+  options ? `${key}:${options.min}` : key) as unknown as TFunction<'validation'>
 
 const valid = {
   name: 'A Person',
@@ -43,5 +47,26 @@ describe('signUpSchema', () => {
 
   it('rejects an empty name', () => {
     expect(signUpSchema.safeParse({ ...valid, name: '' }).success).toBe(false)
+  })
+})
+
+describe('createSignUpSchema', () => {
+  it('accepts a valid registration', () => {
+    expect(createSignUpSchema(stubT).safeParse(valid).success).toBe(true)
+  })
+
+  it('uses the translated message for mismatched passwords', () => {
+    const result = createSignUpSchema(stubT).safeParse({
+      ...valid,
+      confirmPassword: 'different1',
+    })
+    expect(result.success).toBe(false)
+    expect(result.error?.issues[0]?.message).toBe('authenticate.confirmPassword.confirm')
+  })
+
+  it('uses the translated message for an empty name', () => {
+    const result = createSignUpSchema(stubT).safeParse({ ...valid, name: '' })
+    expect(result.success).toBe(false)
+    expect(result.error?.issues[0]?.message).toBe('authenticate.name.required')
   })
 })
