@@ -4,5 +4,13 @@
     "and": "and",
     "terms": "Terms of Service",
     "privacy": "Privacy Policy"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "signOut": "Sign out",
+    "toggleSidebar": "Toggle sidebar"
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}"
   }
 }
