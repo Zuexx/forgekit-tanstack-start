@@ -7,9 +7,5 @@ interface DashboardPageProps {
 export function DashboardPage({ user }: DashboardPageProps) {
   const { t } = useTranslation('common')
 
-  return (
-    <main>
-      <h1>{t('dashboard.welcome', { name: user.name })}</h1>
-    </main>
-  )
+  return <h2>{t('dashboard.welcome', { name: user.name })}</h2>
 }

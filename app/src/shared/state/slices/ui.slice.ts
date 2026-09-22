@@ -11,31 +11,32 @@ export interface UISlice {
   setLoading: (loading: boolean) => void
 }
 
-const SIDEBAR_STORAGE_KEY = 'forgekit-tanstack-start.sidebar-open'
+export const SIDEBAR_STORAGE_KEY = 'forgekit-tanstack-start.sidebar-open'
 
 /**
- * The store is recreated fresh per component-tree mount (see index.ts's own doc comment,
- * to avoid one SSR visitor's state leaking into another's) -- so sidebarOpen alone would
- * reset to its default on every page load without this. window is undefined during SSR.
+ * sidebarOpen's initial value is always `true`, matching what SSR always renders --
+ * reading localStorage synchronously here would also run during the client's very first
+ * hydration render (window already exists then, not just post-hydration), producing a
+ * hydration mismatch for any visitor who'd previously collapsed the sidebar. The real
+ * persisted value is applied afterwards, client-only, by StateProvider's post-mount effect
+ * (see state-provider.tsx), which is safe because it runs strictly after hydration.
  */
-function readStoredSidebarOpen(): boolean {
-  if (typeof window === 'undefined') {
-    return true
-  }
-  const stored = window.localStorage.getItem(SIDEBAR_STORAGE_KEY)
-  return stored === null ? true : stored === 'true'
-}
-
 function writeStoredSidebarOpen(open: boolean): void {
   if (typeof window === 'undefined') {
     return
   }
-  window.localStorage.setItem(SIDEBAR_STORAGE_KEY, String(open))
+  try {
+    window.localStorage.setItem(SIDEBAR_STORAGE_KEY, String(open))
+  } catch {
+    // Storage can throw (e.g. Safari's "block all cookies") -- no-op and keep the
+    // in-memory value only, rather than crashing the whole app (StateProvider wraps
+    // every page, not just the authenticated shell).
+  }
 }
 
 export const createUISlice: ImmerStateCreator<UISlice, AppStore> = (set) => ({
   theme: 'light',
-  sidebarOpen: readStoredSidebarOpen(),
+  sidebarOpen: true,
   loading: false,
 
   setTheme: (theme) =>
