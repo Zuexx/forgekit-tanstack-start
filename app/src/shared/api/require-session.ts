@@ -41,7 +41,7 @@ const getSessionFn = createServerFn({ method: 'GET' }).handler(async () => {
 export async function requireSession() {
   const session = await getSessionFn()
   if (!session) {
-    throw redirect({ to: '/sign-in' })
+    throw redirect({ to: '/{-$locale}/sign-in' })
   }
   return session
 }

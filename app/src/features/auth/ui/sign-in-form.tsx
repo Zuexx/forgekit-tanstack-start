@@ -1,22 +1,27 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '#/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '#/shared/ui/card'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '#/shared/ui/field'
 import { Input } from '#/shared/ui/input'
+import { LocaleSwitcher } from '#/shared/ui/locale-switcher'
 
 import { useSignIn } from '../model/use-sign-in'
 import { useSocialSignIn } from '../model/use-social-sign-in'
-import { signInSchema } from '../model/sign-in-schema'
+import { createSignInSchema } from '../model/sign-in-schema'
 import type { SignInInput } from '../model/sign-in-schema'
 
 export function SignInForm() {
   const signIn = useSignIn()
   const socialSignIn = useSocialSignIn()
+  const { t } = useTranslation('validation')
+  const { t: tAuth } = useTranslation('auth')
+  const { t: tForm } = useTranslation('form')
 
   const form = useForm<SignInInput>({
-    resolver: zodResolver(signInSchema),
+    resolver: zodResolver(createSignInSchema(t)),
     defaultValues: { email: '', password: '' },
   })
 
@@ -27,18 +32,19 @@ export function SignInForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sign in</CardTitle>
+        <CardTitle>{tAuth('signIn.title')}</CardTitle>
+        <LocaleSwitcher />
       </CardHeader>
       <CardContent>
         <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Field>
               <Button type="button" variant="outline" onClick={socialSignIn.signIn}>
-                Sign in with Microsoft
+                {tAuth('signIn.loginWithSSO')}
               </Button>
             </Field>
             <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <FieldLabel htmlFor="email">{tForm('email.label')}</FieldLabel>
               <Input id="email" type="email" {...form.register('email')} />
               {form.formState.errors.email && (
                 <FieldDescription role="alert">
@@ -47,7 +53,7 @@ export function SignInForm() {
               )}
             </Field>
             <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <FieldLabel htmlFor="password">{tForm('password.label')}</FieldLabel>
               <Input id="password" type="password" {...form.register('password')} />
               {form.formState.errors.password && (
                 <FieldDescription role="alert">
@@ -56,7 +62,7 @@ export function SignInForm() {
               )}
             </Field>
             <Field>
-              <Button type="submit">Sign in</Button>
+              <Button type="submit">{tAuth('signIn.loginButton')}</Button>
             </Field>
           </FieldGroup>
         </form>

@@ -39,7 +39,9 @@ describe('useSignOut', () => {
     const { result } = renderHook(() => useSignOut(), { wrapper })
     result.current.mutate()
 
-    await waitFor(() => expect(navigate).toHaveBeenCalledWith({ to: '/' }))
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith({ to: '/{-$locale}' }),
+    )
     expect(toast.success).toHaveBeenCalled()
   })
 })

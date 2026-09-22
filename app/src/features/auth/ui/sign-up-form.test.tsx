@@ -2,9 +2,11 @@ import type * as ReactRouter from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { I18nextProvider } from 'react-i18next'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { authClient } from '#/shared/api'
+import { createI18nInstance } from '#/shared/i18n'
 
 import { SignUpForm } from './sign-up-form'
 
@@ -21,9 +23,12 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
 
 function renderWithQuery() {
   const queryClient = new QueryClient()
+  const i18n = createI18nInstance('en')
   return render(
     <QueryClientProvider client={queryClient}>
-      <SignUpForm />
+      <I18nextProvider i18n={i18n}>
+        <SignUpForm />
+      </I18nextProvider>
     </QueryClientProvider>,
   )
 }
@@ -68,7 +73,7 @@ describe('SignUpForm', () => {
     await userEvent.type(screen.getByLabelText(/confirm password/i), 'different1')
     await userEvent.click(screen.getByRole('button', { name: /create account/i }))
 
-    expect(await screen.findByText(/passwords must match/i)).toBeInTheDocument()
+    expect(await screen.findByText(/password not matched/i)).toBeInTheDocument()
     expect(authClient.signUp.email).not.toHaveBeenCalled()
   })
 })

@@ -48,7 +48,9 @@ describe('useSignUp', () => {
       confirmPassword: 'abcd1234',
     })
 
-    await waitFor(() => expect(navigate).toHaveBeenCalledWith({ to: '/dashboard' }))
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith({ to: '/{-$locale}/dashboard' }),
+    )
     expect(toast.success).toHaveBeenCalled()
   })
 
