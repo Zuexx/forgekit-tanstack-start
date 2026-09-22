@@ -31,4 +31,5 @@ export const createAppStore = () =>
 
 export * from './slices/ui.slice'
 export * from './slices/user.slice'
+export * from './hooks'
 export { StateProvider } from './state-provider'

@@ -4,5 +4,13 @@
     "and": "및",
     "terms": "서비스 이용약관",
     "privacy": "개인정보 처리방침"
+  },
+  "nav": {
+    "dashboard": "대시보드",
+    "signOut": "로그아웃",
+    "toggleSidebar": "사이드바 전환"
+  },
+  "dashboard": {
+    "welcome": "환영합니다, {{name}}님"
   }
 }

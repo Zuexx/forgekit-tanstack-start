@@ -11,10 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
 import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}/index'
-import { Route as Char123LocaleChar125DashboardRouteImport } from './routes/{-$locale}/dashboard'
+import { Route as Char123LocaleChar125AuthenticatedRouteRouteImport } from './routes/{-$locale}/_authenticated/route'
 import { Route as Char123LocaleChar125SignInRouteImport } from './routes/{-$locale}/sign-in'
 import { Route as Char123LocaleChar125SignUpRouteImport } from './routes/{-$locale}/sign-up'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as Char123LocaleChar125AuthenticatedDashboardRouteImport } from './routes/{-$locale}/_authenticated/dashboard'
 
 const Char123LocaleChar125RouteRoute =
   Char123LocaleChar125RouteRouteImport.update({
@@ -28,10 +29,9 @@ const Char123LocaleChar125IndexRoute =
     path: '/',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
-const Char123LocaleChar125DashboardRoute =
-  Char123LocaleChar125DashboardRouteImport.update({
-    id: '/dashboard',
-    path: '/dashboard',
+const Char123LocaleChar125AuthenticatedRouteRoute =
+  Char123LocaleChar125AuthenticatedRouteRouteImport.update({
+    id: '/_authenticated',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125SignInRoute =
@@ -51,55 +51,63 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char123LocaleChar125AuthenticatedDashboardRoute =
+  Char123LocaleChar125AuthenticatedDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => Char123LocaleChar125AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
-  '/{-$locale}/dashboard': typeof Char123LocaleChar125DashboardRoute
   '/{-$locale}/sign-in': typeof Char123LocaleChar125SignInRoute
   '/{-$locale}/sign-up': typeof Char123LocaleChar125SignUpRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/{-$locale}/dashboard': typeof Char123LocaleChar125AuthenticatedDashboardRoute
 }
 export interface FileRoutesByTo {
-  '/{-$locale}/dashboard': typeof Char123LocaleChar125DashboardRoute
+  '/{-$locale}': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/sign-in': typeof Char123LocaleChar125SignInRoute
   '/{-$locale}/sign-up': typeof Char123LocaleChar125SignUpRoute
-  '/{-$locale}': typeof Char123LocaleChar125IndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/{-$locale}/dashboard': typeof Char123LocaleChar125AuthenticatedDashboardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
-  '/{-$locale}/dashboard': typeof Char123LocaleChar125DashboardRoute
+  '/{-$locale}/_authenticated': typeof Char123LocaleChar125AuthenticatedRouteRouteWithChildren
   '/{-$locale}/sign-in': typeof Char123LocaleChar125SignInRoute
   '/{-$locale}/sign-up': typeof Char123LocaleChar125SignUpRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/{-$locale}/_authenticated/dashboard': typeof Char123LocaleChar125AuthenticatedDashboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/{-$locale}'
-    | '/{-$locale}/dashboard'
     | '/{-$locale}/sign-in'
     | '/{-$locale}/sign-up'
     | '/{-$locale}/'
     | '/api/auth/$'
+    | '/{-$locale}/dashboard'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/{-$locale}/dashboard'
+    | '/{-$locale}'
     | '/{-$locale}/sign-in'
     | '/{-$locale}/sign-up'
-    | '/{-$locale}'
     | '/api/auth/$'
+    | '/{-$locale}/dashboard'
   id:
     | '__root__'
     | '/{-$locale}'
-    | '/{-$locale}/dashboard'
+    | '/{-$locale}/_authenticated'
     | '/{-$locale}/sign-in'
     | '/{-$locale}/sign-up'
     | '/{-$locale}/'
     | '/api/auth/$'
+    | '/{-$locale}/_authenticated/dashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -123,11 +131,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125IndexRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/{-$locale}/dashboard': {
-      id: '/{-$locale}/dashboard'
-      path: '/dashboard'
-      fullPath: '/{-$locale}/dashboard'
-      preLoaderRoute: typeof Char123LocaleChar125DashboardRouteImport
+    '/{-$locale}/_authenticated': {
+      id: '/{-$locale}/_authenticated'
+      path: ''
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125AuthenticatedRouteRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/sign-in': {
@@ -151,11 +159,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/{-$locale}/_authenticated/dashboard': {
+      id: '/{-$locale}/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/{-$locale}/dashboard'
+      preLoaderRoute: typeof Char123LocaleChar125AuthenticatedDashboardRouteImport
+      parentRoute: typeof Char123LocaleChar125AuthenticatedRouteRoute
+    }
   }
 }
 
+interface Char123LocaleChar125AuthenticatedRouteRouteChildren {
+  Char123LocaleChar125AuthenticatedDashboardRoute: typeof Char123LocaleChar125AuthenticatedDashboardRoute
+}
+
+const Char123LocaleChar125AuthenticatedRouteRouteChildren: Char123LocaleChar125AuthenticatedRouteRouteChildren =
+  {
+    Char123LocaleChar125AuthenticatedDashboardRoute:
+      Char123LocaleChar125AuthenticatedDashboardRoute,
+  }
+
+const Char123LocaleChar125AuthenticatedRouteRouteWithChildren =
+  Char123LocaleChar125AuthenticatedRouteRoute._addFileChildren(
+    Char123LocaleChar125AuthenticatedRouteRouteChildren,
+  )
+
 interface Char123LocaleChar125RouteRouteChildren {
-  Char123LocaleChar125DashboardRoute: typeof Char123LocaleChar125DashboardRoute
+  Char123LocaleChar125AuthenticatedRouteRoute: typeof Char123LocaleChar125AuthenticatedRouteRouteWithChildren
   Char123LocaleChar125SignInRoute: typeof Char123LocaleChar125SignInRoute
   Char123LocaleChar125SignUpRoute: typeof Char123LocaleChar125SignUpRoute
   Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
@@ -163,7 +193,8 @@ interface Char123LocaleChar125RouteRouteChildren {
 
 const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChildren =
   {
-    Char123LocaleChar125DashboardRoute: Char123LocaleChar125DashboardRoute,
+    Char123LocaleChar125AuthenticatedRouteRoute:
+      Char123LocaleChar125AuthenticatedRouteRouteWithChildren,
     Char123LocaleChar125SignInRoute: Char123LocaleChar125SignInRoute,
     Char123LocaleChar125SignUpRoute: Char123LocaleChar125SignUpRoute,
     Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,

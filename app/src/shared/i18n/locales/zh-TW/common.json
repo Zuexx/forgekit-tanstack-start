@@ -4,5 +4,13 @@
     "and": "以及",
     "terms": "服務條款",
     "privacy": "隱私權政策"
+  },
+  "nav": {
+    "dashboard": "儀表板",
+    "signOut": "登出",
+    "toggleSidebar": "切換側邊欄"
+  },
+  "dashboard": {
+    "welcome": "歡迎，{{name}}"
   }
 }
