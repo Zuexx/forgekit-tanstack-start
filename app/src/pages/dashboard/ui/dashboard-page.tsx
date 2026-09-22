@@ -1,17 +1,15 @@
-import { useSignOut } from '#/features/auth'
-import { Button } from '#/shared/ui/button'
+import { useTranslation } from 'react-i18next'
 
 interface DashboardPageProps {
   user: { name: string }
 }
 
 export function DashboardPage({ user }: DashboardPageProps) {
-  const signOut = useSignOut()
+  const { t } = useTranslation('common')
 
   return (
     <main>
-      <h1>Welcome, {user.name}</h1>
-      <Button onClick={() => signOut.mutate()}>Sign out</Button>
+      <h1>{t('dashboard.welcome', { name: user.name })}</h1>
     </main>
   )
 }
