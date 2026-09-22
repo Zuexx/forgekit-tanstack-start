@@ -28,7 +28,7 @@
     "@tediousjs/connection-string": "1.1.0",
     "better-auth": "^1.7.4",
     "better-sqlite3": "^13.0.3",
-    "dotenv": "^17.4.2",
+    "dotenv": "^18.0.1",
     "i18next": "^26.4.2",
     "immer": "^11.1.18",
     "kysely": "^0.29.5",
@@ -41,7 +41,7 @@
     "react-hot-toast": "^2.6.0",
     "react-i18next": "^17.0.14",
     "tarn": "^3.1.2",
-    "tedious": "^19.2.2",
+    "tedious": "^20.0.0",
     "zod": "^4.6.2",
     "zustand": "^5.0.15"
   },
