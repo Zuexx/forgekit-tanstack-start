@@ -2,7 +2,6 @@ import { create, props as stylexProps } from '@stylexjs/stylex'
 import { LogOut } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { useSignOut } from '#/features/auth'
 import { useUser } from '#/shared/state'
 import { colors } from '#/shared/lib/tokens.stylex'
 import { Button } from './button'
@@ -41,9 +40,12 @@ const styles = create({
   },
 })
 
-export function NavUser() {
+export interface NavUserProps {
+  onSignOut: () => void
+}
+
+export function NavUser({ onSignOut }: NavUserProps) {
   const { user } = useUser()
-  const signOut = useSignOut()
   const { t } = useTranslation('common')
 
   const containerProps = stylexProps(styles.container)
@@ -76,7 +78,7 @@ export function NavUser() {
         variant="ghost"
         size="icon"
         aria-label={t('nav.signOut')}
-        onClick={() => signOut.mutate()}
+        onClick={onSignOut}
       >
         <LogOut />
       </Button>

@@ -7,8 +7,7 @@ import { createI18nInstance } from '#/shared/i18n'
 
 import { NavUser } from './nav-user'
 
-const { mockUseUser, mockMutate } = vi.hoisted(() => ({
-  mockMutate: vi.fn(),
+const { mockUseUser } = vi.hoisted(() => ({
   mockUseUser: vi.fn(),
 }))
 
@@ -16,15 +15,11 @@ vi.mock('#/shared/state', () => ({
   useUser: mockUseUser,
 }))
 
-vi.mock('#/features/auth', () => ({
-  useSignOut: () => ({ mutate: mockMutate }),
-}))
-
-function renderNavUser() {
+function renderNavUser(onSignOut: () => void) {
   const i18n = createI18nInstance('en')
   return render(
     <I18nextProvider i18n={i18n}>
-      <NavUser />
+      <NavUser onSignOut={onSignOut} />
     </I18nextProvider>,
   )
 }
@@ -33,13 +28,12 @@ describe('NavUser', () => {
   afterEach(() => {
     cleanup()
     mockUseUser.mockReset()
-    mockMutate.mockReset()
   })
 
   it('renders a loading placeholder when user is null', () => {
     mockUseUser.mockReturnValue({ user: null })
 
-    renderNavUser()
+    renderNavUser(vi.fn())
 
     expect(screen.getByTestId('nav-user-loading')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /sign out/i })).not.toBeInTheDocument()
@@ -50,21 +44,22 @@ describe('NavUser', () => {
       user: { email: 'a@example.com', id: '1', name: 'A Person' },
     })
 
-    renderNavUser()
+    renderNavUser(vi.fn())
 
     expect(screen.getByText('A Person')).toBeInTheDocument()
     expect(screen.getByText('a@example.com')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
   })
 
-  it('calls signOut.mutate when the sign-out button is clicked', async () => {
+  it('calls onSignOut when the sign-out button is clicked', async () => {
     mockUseUser.mockReturnValue({
       user: { email: 'a@example.com', id: '1', name: 'A Person' },
     })
+    const onSignOut = vi.fn()
 
-    renderNavUser()
+    renderNavUser(onSignOut)
     await userEvent.click(screen.getByRole('button', { name: /sign out/i }))
 
-    expect(mockMutate).toHaveBeenCalledOnce()
+    expect(onSignOut).toHaveBeenCalledOnce()
   })
 })
