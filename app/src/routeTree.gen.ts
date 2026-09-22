@@ -9,35 +9,42 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
 import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}/index'
 import { Route as Char123LocaleChar125DashboardRouteImport } from './routes/{-$locale}/dashboard'
 import { Route as Char123LocaleChar125SignInRouteImport } from './routes/{-$locale}/sign-in'
 import { Route as Char123LocaleChar125SignUpRouteImport } from './routes/{-$locale}/sign-up'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
+const Char123LocaleChar125RouteRoute =
+  Char123LocaleChar125RouteRouteImport.update({
+    id: '/{-$locale}',
+    path: '/{-$locale}',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const Char123LocaleChar125IndexRoute =
   Char123LocaleChar125IndexRouteImport.update({
-    id: '/{-$locale}/',
-    path: '/{-$locale}/',
-    getParentRoute: () => rootRouteImport,
+    id: '/',
+    path: '/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125DashboardRoute =
   Char123LocaleChar125DashboardRouteImport.update({
-    id: '/{-$locale}/dashboard',
-    path: '/{-$locale}/dashboard',
-    getParentRoute: () => rootRouteImport,
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125SignInRoute =
   Char123LocaleChar125SignInRouteImport.update({
-    id: '/{-$locale}/sign-in',
-    path: '/{-$locale}/sign-in',
-    getParentRoute: () => rootRouteImport,
+    id: '/sign-in',
+    path: '/sign-in',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125SignUpRoute =
   Char123LocaleChar125SignUpRouteImport.update({
-    id: '/{-$locale}/sign-up',
-    path: '/{-$locale}/sign-up',
-    getParentRoute: () => rootRouteImport,
+    id: '/sign-up',
+    path: '/sign-up',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
@@ -46,6 +53,7 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
   '/{-$locale}/dashboard': typeof Char123LocaleChar125DashboardRoute
   '/{-$locale}/sign-in': typeof Char123LocaleChar125SignInRoute
   '/{-$locale}/sign-up': typeof Char123LocaleChar125SignUpRoute
@@ -61,6 +69,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
   '/{-$locale}/dashboard': typeof Char123LocaleChar125DashboardRoute
   '/{-$locale}/sign-in': typeof Char123LocaleChar125SignInRoute
   '/{-$locale}/sign-up': typeof Char123LocaleChar125SignUpRoute
@@ -70,6 +79,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/{-$locale}'
     | '/{-$locale}/dashboard'
     | '/{-$locale}/sign-in'
     | '/{-$locale}/sign-up'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
     | '/api/auth/$'
   id:
     | '__root__'
+    | '/{-$locale}'
     | '/{-$locale}/dashboard'
     | '/{-$locale}/sign-in'
     | '/{-$locale}/sign-up'
@@ -92,42 +103,46 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  Char123LocaleChar125DashboardRoute: typeof Char123LocaleChar125DashboardRoute
-  Char123LocaleChar125SignInRoute: typeof Char123LocaleChar125SignInRoute
-  Char123LocaleChar125SignUpRoute: typeof Char123LocaleChar125SignUpRoute
-  Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
+  Char123LocaleChar125RouteRoute: typeof Char123LocaleChar125RouteRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/{-$locale}': {
+      id: '/{-$locale}'
+      path: '/{-$locale}'
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125RouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/{-$locale}/': {
       id: '/{-$locale}/'
-      path: '/{-$locale}'
+      path: '/'
       fullPath: '/{-$locale}/'
       preLoaderRoute: typeof Char123LocaleChar125IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/dashboard': {
       id: '/{-$locale}/dashboard'
-      path: '/{-$locale}/dashboard'
+      path: '/dashboard'
       fullPath: '/{-$locale}/dashboard'
       preLoaderRoute: typeof Char123LocaleChar125DashboardRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/sign-in': {
       id: '/{-$locale}/sign-in'
-      path: '/{-$locale}/sign-in'
+      path: '/sign-in'
       fullPath: '/{-$locale}/sign-in'
       preLoaderRoute: typeof Char123LocaleChar125SignInRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/sign-up': {
       id: '/{-$locale}/sign-up'
-      path: '/{-$locale}/sign-up'
+      path: '/sign-up'
       fullPath: '/{-$locale}/sign-up'
       preLoaderRoute: typeof Char123LocaleChar125SignUpRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -139,11 +154,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface Char123LocaleChar125RouteRouteChildren {
+  Char123LocaleChar125DashboardRoute: typeof Char123LocaleChar125DashboardRoute
+  Char123LocaleChar125SignInRoute: typeof Char123LocaleChar125SignInRoute
+  Char123LocaleChar125SignUpRoute: typeof Char123LocaleChar125SignUpRoute
+  Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
+}
+
+const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChildren =
+  {
+    Char123LocaleChar125DashboardRoute: Char123LocaleChar125DashboardRoute,
+    Char123LocaleChar125SignInRoute: Char123LocaleChar125SignInRoute,
+    Char123LocaleChar125SignUpRoute: Char123LocaleChar125SignUpRoute,
+    Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
+  }
+
+const Char123LocaleChar125RouteRouteWithChildren =
+  Char123LocaleChar125RouteRoute._addFileChildren(
+    Char123LocaleChar125RouteRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
-  Char123LocaleChar125DashboardRoute: Char123LocaleChar125DashboardRoute,
-  Char123LocaleChar125SignInRoute: Char123LocaleChar125SignInRoute,
-  Char123LocaleChar125SignUpRoute: Char123LocaleChar125SignUpRoute,
-  Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
+  Char123LocaleChar125RouteRoute: Char123LocaleChar125RouteRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
