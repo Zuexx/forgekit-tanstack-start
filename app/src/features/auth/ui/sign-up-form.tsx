@@ -1,20 +1,25 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '#/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '#/shared/ui/card'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '#/shared/ui/field'
 import { Input } from '#/shared/ui/input'
+import { LocaleSwitcher } from '#/shared/ui/locale-switcher'
 
 import { useSignUp } from '../model/use-sign-up'
-import { signUpSchema } from '../model/sign-up-schema'
+import { createSignUpSchema } from '../model/sign-up-schema'
 import type { SignUpInput } from '../model/sign-up-schema'
 
 export function SignUpForm() {
   const signUp = useSignUp()
+  const { t } = useTranslation('validation')
+  const { t: tAuth } = useTranslation('auth')
+  const { t: tForm } = useTranslation('form')
 
   const form = useForm<SignUpInput>({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(createSignUpSchema(t)),
     defaultValues: { name: '', email: '', password: '', confirmPassword: '' },
   })
 
@@ -25,13 +30,14 @@ export function SignUpForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
+        <CardTitle>{tAuth('signUp.title')}</CardTitle>
+        <LocaleSwitcher />
       </CardHeader>
       <CardContent>
         <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="name">Name</FieldLabel>
+              <FieldLabel htmlFor="name">{tForm('fullName.label')}</FieldLabel>
               <Input id="name" type="text" {...form.register('name')} />
               {form.formState.errors.name && (
                 <FieldDescription role="alert">
@@ -40,7 +46,7 @@ export function SignUpForm() {
               )}
             </Field>
             <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <FieldLabel htmlFor="email">{tForm('email.label')}</FieldLabel>
               <Input id="email" type="email" {...form.register('email')} />
               {form.formState.errors.email && (
                 <FieldDescription role="alert">
@@ -49,7 +55,7 @@ export function SignUpForm() {
               )}
             </Field>
             <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <FieldLabel htmlFor="password">{tForm('signUp.password.label')}</FieldLabel>
               <Input id="password" type="password" {...form.register('password')} />
               {form.formState.errors.password && (
                 <FieldDescription role="alert">
@@ -58,7 +64,9 @@ export function SignUpForm() {
               )}
             </Field>
             <Field>
-              <FieldLabel htmlFor="confirmPassword">Confirm password</FieldLabel>
+              <FieldLabel htmlFor="confirmPassword">
+                {tForm('signUp.confirmPassword.label')}
+              </FieldLabel>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -71,7 +79,7 @@ export function SignUpForm() {
               )}
             </Field>
             <Field>
-              <Button type="submit">Create account</Button>
+              <Button type="submit">{tAuth('signUp.createAccountButton')}</Button>
             </Field>
           </FieldGroup>
         </form>

@@ -2,26 +2,37 @@ import { createRootRoute, redirect } from '@tanstack/react-router'
 
 import { evaluatePolicy, resolveContext } from '#/shared/api/abac'
 import { ABAC_CONFIG } from '#/shared/lib/abac-config'
+import { DEFAULT_LOCALE } from '#/shared/i18n'
+import type { Locale } from '#/shared/i18n'
+import { resolveLocale } from '#/shared/i18n/resolve-locale'
+import { withLocalePrefix } from '#/shared/i18n/build-locale'
 import { RootDocument } from '#/app/root-document'
 import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
   beforeLoad: async ({ location }) => {
+    let locale: Locale = DEFAULT_LOCALE
+    let path = location.pathname
+    try {
+      const localeResult = await resolveLocale(location.pathname)
+      locale = localeResult.locale
+      path = localeResult.path
+    } catch {
+      // Fail open to the default locale — same reasoning as the ABAC gate below: this
+      // step is a convenience, not a security boundary, so a transient RPC failure
+      // shouldn't break every route.
+    }
+
     let decision
     try {
-      decision = evaluatePolicy(
-        await resolveContext(location.pathname, ABAC_CONFIG),
-      )
+      decision = evaluatePolicy(await resolveContext(path, ABAC_CONFIG))
     } catch {
-      // Fail open: this gate is a cheap redirect convenience, not the real authorization
-      // boundary — requireSession() on protected routes is, so letting a transient
-      // resolveContext RPC failure through here (rather than breaking every route,
-      // including public ones) doesn't create a security hole.
-      return
+      return { locale }
     }
     if (decision.effect === 'redirect') {
-      throw redirect({ to: decision.to })
+      throw redirect({ to: withLocalePrefix(decision.to, locale) })
     }
+    return { locale }
   },
   head: () => ({
     meta: [

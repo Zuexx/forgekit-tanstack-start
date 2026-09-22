@@ -43,7 +43,9 @@ describe('useSignIn', () => {
     const { result } = renderHook(() => useSignIn(), { wrapper })
     result.current.mutate({ email: 'a@example.com', password: 'abcd1234' })
 
-    await waitFor(() => expect(navigate).toHaveBeenCalledWith({ to: '/dashboard' }))
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith({ to: '/{-$locale}/dashboard' }),
+    )
     expect(toast.success).toHaveBeenCalled()
     expect(toast.error).not.toHaveBeenCalled()
   })
