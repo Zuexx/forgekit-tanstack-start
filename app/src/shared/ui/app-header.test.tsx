@@ -20,6 +20,10 @@ vi.mock('./locale-switcher', () => ({
   LocaleSwitcher: () => <div data-testid="locale-switcher" />,
 }))
 
+vi.mock('./theme-switcher', () => ({
+  ThemeSwitcher: () => <div data-testid="theme-switcher" />,
+}))
+
 function renderAppHeader() {
   const i18n = createI18nInstance('en')
   return render(
