@@ -12,7 +12,7 @@ import { existsSync, rmSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 
-import type { auth as Auth } from './auth'
+import type { auth as Auth } from './auth.server'
 import type { getSessionForHeaders as GetSessionForHeaders } from './require-session'
 
 const TEST_DB_PATH = resolve(process.cwd(), '.require-session-test.db')
@@ -29,7 +29,7 @@ beforeAll(async () => {
   process.env.Database__Provider = 'Sqlite'
   vi.resetModules()
 
-  ;({ auth } = await import('./auth'))
+  ;({ auth } = await import('./auth.server'))
   ;({ getSessionForHeaders } = await import('./require-session'))
 
   const { getMigrations } = await import('better-auth/db/migration')
