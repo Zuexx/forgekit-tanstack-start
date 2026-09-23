@@ -15,6 +15,10 @@ process.env.Database__Provider = 'Sqlite'
 
 const { auth } = await import('../src/shared/api/auth.server')
 const { getMigrations } = await import('better-auth/db/migration')
+// getMigrations logs its own "ERROR [Better Auth]: Database schema mismatch -- Missing tables"
+// line here, every run, before creating them -- it's diagnosing the fresh, still-empty file
+// deleted above, not reporting a real failure. Benign; runMigrations() below is what actually
+// creates the tables, and every test run through this suite confirms they exist afterward.
 const { runMigrations } = await getMigrations(auth.options)
 await runMigrations()
 

@@ -1,6 +1,4 @@
-import { expect, test } from '@playwright/test'
-
-import { makeTestUser, signUpViaApi } from './helpers'
+import { expect, makeTestUser, signUpViaApi, test } from './helpers'
 
 test.describe('auth flow', () => {
   test('signing up through the real form writes a session cookie and reaches the dashboard', async ({

@@ -1,6 +1,4 @@
-import { expect, test } from '@playwright/test'
-
-import { makeTestUser, signUpViaApi } from './helpers'
+import { expect, makeTestUser, signUpViaApi, test } from './helpers'
 
 test.describe('authenticated app shell', () => {
   test.beforeEach(async ({ context }) => {

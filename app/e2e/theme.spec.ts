@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './helpers'
 
 test.describe('theme switcher', () => {
   test('clicking the toggle switches to dark mode and visibly applies it', async ({ page }) => {
@@ -31,24 +31,27 @@ test.describe('theme switcher', () => {
 
     await page.reload()
 
-    // Read immediately after navigation settles, before any client-side re-render could run —
-    // this is the flash-prevention <script> in root-document.tsx's <head>, not React state.
+    // This measures the class's final state once the page settles, not paint timing, so it
+    // can't literally prove there was no flash. It's still a meaningful proxy: nothing in
+    // ThemeSwitcher re-applies the class on mount (only on click), so the only thing able to
+    // set it this early is the synchronous, blocking flash-prevention <script> in
+    // root-document.tsx's <head>. If that script broke, this assertion would fail for real.
     await expect(page.locator('html')).toHaveClass(/dark/)
   })
 
-  test('prefers-color-scheme sets the first-visit default for a new visitor', async ({
-    browser,
-  }) => {
-    const context = await browser.newContext({ colorScheme: 'dark' })
-    const page = await context.newPage()
+  test.describe('for a fresh visitor whose OS prefers dark mode', () => {
+    // Scopes colorScheme to just this test via a context Playwright creates and tears down
+    // itself, rather than manually managing (and risking leaking, if an assertion above threw)
+    // a browser context via browser.newContext().
+    test.use({ colorScheme: 'dark' })
 
-    await page.goto('/sign-in')
+    test('prefers-color-scheme sets the first-visit default', async ({ page }) => {
+      await page.goto('/sign-in')
 
-    await expect(page.locator('html')).toHaveClass(/dark/)
-    await expect(page.getByRole('button', { name: /Switch theme/ })).toHaveAccessibleName(
-      'Switch theme (current: dark)',
-    )
-
-    await context.close()
+      await expect(page.locator('html')).toHaveClass(/dark/)
+      await expect(page.getByRole('button', { name: /Switch theme/ })).toHaveAccessibleName(
+        'Switch theme (current: dark)',
+      )
+    })
   })
 })

@@ -1,6 +1,4 @@
-import { expect, test } from '@playwright/test'
-
-import { makeTestUser, signUpViaApi } from './helpers'
+import { expect, makeTestUser, signUpViaApi, test } from './helpers'
 
 test.describe('ABAC route guard', () => {
   test('an unauthenticated visit to a protected route redirects to sign-in', async ({ page }) => {
@@ -33,6 +31,9 @@ test.describe('ABAC route guard', () => {
   test('an unauthenticated visit to the public home page renders normally', async ({ page }) => {
     await page.goto('/')
 
+    // A negative URL check alone would also pass on a 500 error page or a blank one -- assert
+    // the real page heading actually rendered.
     await expect(page).not.toHaveURL(/\/sign-in$/)
+    await expect(page.getByRole('heading', { name: 'Welcome to TanStack Start' })).toBeVisible()
   })
 })

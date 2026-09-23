@@ -16,8 +16,5 @@ todos.json
 *.db-wal
 *.db-shm
 
-.e2e-test.db
-.e2e-test.db-wal
-.e2e-test.db-shm
 playwright-report/
 test-results/

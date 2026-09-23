@@ -1,4 +1,28 @@
 import type { BrowserContext } from '@playwright/test'
+import { test as base, expect } from '@playwright/test'
+
+/**
+ * Every spec file in this suite imports `test`/`expect` from here rather than
+ * `@playwright/test` directly, so every test automatically fails on an uncaught client-side
+ * error -- the exact symptom of the app-wide hydration bug that motivated this whole e2e
+ * sub-project (a server-only module leaking into the client bundle threw during hydration,
+ * silently breaking every onClick/onSubmit, invisible to every prior curl/jsdom-based check).
+ * Without this, a regression of that class would only be caught if it happened to break some
+ * other assertion downstream -- most of this suite's own assertions are on server-rendered
+ * state (URLs, redirects) that a purely client-side hydration failure wouldn't touch.
+ */
+export const test = base.extend<{ failOnPageError: void }>({
+  failOnPageError: [
+    async ({ page }, use) => {
+      const errors: string[] = []
+      page.on('pageerror', (error) => errors.push(error.message))
+      await use()
+      expect(errors, `Unexpected client-side error(s): ${errors.join('; ')}`).toEqual([])
+    },
+    { auto: true },
+  ],
+})
+export { expect }
 
 export interface TestUser {
   name: string

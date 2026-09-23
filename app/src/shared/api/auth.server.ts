@@ -117,7 +117,14 @@ export const auth = betterAuth({
     enabled: true,
   },
   rateLimit: {
-    enabled: process.env.E2E_TEST !== 'true',
+    // Only ever forces this OFF for e2e; every other caller (dev server, Vitest) keeps
+    // better-auth's own default (enabled only in production) rather than being flipped on by
+    // this option existing at all -- the final whole-branch review caught that `!== 'true'`
+    // here would have turned rate limiting ON in dev and Vitest, which previously ran with it
+    // off via better-auth's default, and would start 429ing `auth-integration.test.ts`/
+    // `require-session.test.ts` the moment either file makes a 4th sign-in/sign-up call within
+    // better-auth's 10-second window.
+    enabled: process.env.E2E_TEST === 'true' ? false : undefined,
   },
   socialProviders: microsoftProvider,
   advanced: {
