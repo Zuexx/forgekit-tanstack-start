@@ -4,14 +4,32 @@ import { deleteCookie, getRequestHeaders } from '@tanstack/react-start/server'
 
 import { AUTH_COOKIE } from '#/shared/lib/constants'
 
-import { auth } from './auth'
-
 /**
  * The testable core: takes headers directly rather than reading them itself, so a test can
  * construct a real Headers object from a real signed-up user's cookie without needing
  * TanStack Start's server runtime at all.
+ *
+ * `auth` is imported dynamically, not as a plain top-level `import { auth } from './auth'`.
+ * auth.ts side-effect-imports db/load-root-env.ts (dotenv + node:path.resolve at module scope)
+ * and the db adapters (better-sqlite3, mssql, pg) — none of that is a TanStack Start
+ * server-only API the framework's own import-protection plugin recognizes (that plugin only
+ * guards '@tanstack/react-start/server' exports, confirmed by this file's own
+ * getRequestHeaders/deleteCookie imports below still needing createServerFn's split). A plain
+ * top-level `import { auth } from './auth'` therefore bundled this entire chain into the
+ * *client* build with no build-time error: dashboard.tsx imports requireSession from this
+ * file, and Vite's static analysis eagerly includes anything a client-reachable file imports
+ * at module scope. Confirmed via a real browser: `node:path.resolve` throws the instant that
+ * chunk evaluates client-side (Vite stubs `node:path` to throw on property access in browser
+ * builds), and that throw broke React's event delegation for the entire app — every onClick/
+ * onSubmit silently did nothing, invisible to every prior verification in this project because
+ * curl-based checks and jsdom-mocked unit tests never execute a real client bundle. A dynamic
+ * `import()` here, used only inside this function (itself only ever called from the
+ * createServerFn handler below, never from client code), keeps auth.ts's whole module graph
+ * out of the client chunk: Vite gives it its own async chunk that's simply never requested
+ * client-side, since nothing client-side ever calls this function.
  */
 export async function getSessionForHeaders(headers: Headers) {
+  const { auth } = await import('./auth')
   return auth.api.getSession({ headers })
 }
 
