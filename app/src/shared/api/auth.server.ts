@@ -116,6 +116,9 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  rateLimit: {
+    enabled: process.env.E2E_TEST !== 'true',
+  },
   socialProviders: microsoftProvider,
   advanced: {
     cookiePrefix: AUTH_COOKIE,

@@ -24,6 +24,7 @@ export default defineConfig({
       BETTER_AUTH_SECRET: 'e2e-test-secret-at-least-32-characters-long',
       BETTER_AUTH_URL: 'http://localhost:4173',
       Database__Provider: 'Sqlite',
+      E2E_TEST: 'true',
     },
   },
 })
