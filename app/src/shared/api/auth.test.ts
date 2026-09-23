@@ -1,45 +1,51 @@
+// @vitest-environment node
+//
+// auth.server.ts is a '*.server.*' file — TanStack Start's import-protection Vite plugin
+// treats the default jsdom environment as client-reachable and replaces this module's exports
+// with mocks. Running under plain 'node' sidesteps that classification (same pattern already
+// used by require-session.test.ts and auth-integration.test.ts).
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 describe('parseEnvList', () => {
   it('treats an unset variable as no entries', async () => {
-    const { parseEnvList } = await import('./auth')
+    const { parseEnvList } = await import('./auth.server')
     expect(parseEnvList(undefined)).toEqual([])
   })
 
   it('treats an empty variable as no entries', async () => {
-    const { parseEnvList } = await import('./auth')
+    const { parseEnvList } = await import('./auth.server')
     expect(parseEnvList('')).toEqual([])
   })
 
   it('ignores whitespace-only values', async () => {
-    const { parseEnvList } = await import('./auth')
+    const { parseEnvList } = await import('./auth.server')
     expect(parseEnvList('   ')).toEqual([])
   })
 
   it('splits on commas', async () => {
-    const { parseEnvList } = await import('./auth')
+    const { parseEnvList } = await import('./auth.server')
     expect(parseEnvList('a,b,c')).toEqual(['a', 'b', 'c'])
   })
 
   it('trims surrounding whitespace', async () => {
-    const { parseEnvList } = await import('./auth')
+    const { parseEnvList } = await import('./auth.server')
     expect(parseEnvList(' a , b ')).toEqual(['a', 'b'])
   })
 
   it('drops empty entries from trailing or doubled commas', async () => {
-    const { parseEnvList } = await import('./auth')
+    const { parseEnvList } = await import('./auth.server')
     expect(parseEnvList('a,,b,')).toEqual(['a', 'b'])
   })
 })
 
 describe('normalizeProvider', () => {
   it('defaults an unset value to sqlite', async () => {
-    const { normalizeProvider } = await import('./auth')
+    const { normalizeProvider } = await import('./auth.server')
     expect(normalizeProvider(undefined)).toBe('sqlite')
   })
 
   it('is case-insensitive and accepts the API\'s aliases', async () => {
-    const { normalizeProvider } = await import('./auth')
+    const { normalizeProvider } = await import('./auth.server')
     expect(normalizeProvider('SQLite')).toBe('sqlite')
     expect(normalizeProvider('Postgres')).toBe('postgres')
     expect(normalizeProvider('PostgreSQL')).toBe('postgres')
@@ -49,7 +55,7 @@ describe('normalizeProvider', () => {
   })
 
   it('rejects an unsupported value', async () => {
-    const { normalizeProvider } = await import('./auth')
+    const { normalizeProvider } = await import('./auth.server')
     expect(() => normalizeProvider('Oracle')).toThrow(
       'Unsupported database provider',
     )
@@ -71,7 +77,7 @@ describe('database option', () => {
     // Kysely instance (sqlite.ts, mssql.ts) takes the wrapper.
     process.env.Database__Provider = 'Postgres'
     vi.resetModules()
-    const { database } = await import('./auth')
+    const { database } = await import('./auth.server')
     expect(database).not.toHaveProperty('type')
     expect(database).toHaveProperty('connect')
   })
@@ -79,7 +85,7 @@ describe('database option', () => {
   it('selects the sqlite adapter by default', async () => {
     delete process.env.Database__Provider
     vi.resetModules()
-    const { database } = await import('./auth')
+    const { database } = await import('./auth.server')
     expect(database).toHaveProperty('type', 'sqlite')
   })
 })

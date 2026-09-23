@@ -9,27 +9,30 @@ import { AUTH_COOKIE } from '#/shared/lib/constants'
  * construct a real Headers object from a real signed-up user's cookie without needing
  * TanStack Start's server runtime at all.
  *
- * `auth` is imported dynamically, not as a plain top-level `import { auth } from './auth'`.
- * auth.ts side-effect-imports db/load-root-env.ts (dotenv + node:path.resolve at module scope)
- * and the db adapters (better-sqlite3, mssql, pg) — none of that is a TanStack Start
- * server-only API the framework's own import-protection plugin recognizes (that plugin only
- * guards '@tanstack/react-start/server' exports, confirmed by this file's own
- * getRequestHeaders/deleteCookie imports below still needing createServerFn's split). A plain
- * top-level `import { auth } from './auth'` therefore bundled this entire chain into the
- * *client* build with no build-time error: dashboard.tsx imports requireSession from this
- * file, and Vite's static analysis eagerly includes anything a client-reachable file imports
- * at module scope. Confirmed via a real browser: `node:path.resolve` throws the instant that
- * chunk evaluates client-side (Vite stubs `node:path` to throw on property access in browser
- * builds), and that throw broke React's event delegation for the entire app — every onClick/
- * onSubmit silently did nothing, invisible to every prior verification in this project because
- * curl-based checks and jsdom-mocked unit tests never execute a real client bundle. A dynamic
- * `import()` here, used only inside this function (itself only ever called from the
- * createServerFn handler below, never from client code), keeps auth.ts's whole module graph
- * out of the client chunk: Vite gives it its own async chunk that's simply never requested
- * client-side, since nothing client-side ever calls this function.
+ * `auth` is imported dynamically, not as a plain top-level `import { auth } from './auth.server'`.
+ * createServerFn's compiler only drops an import from the client build when nothing outside
+ * the handler closure uses it — getRequestHeaders/deleteCookie below qualify (used only inside
+ * the handler), but this function is separately exported for testing and uses `auth` outside
+ * any handler, so the compiler can't prove it's droppable and bundles it into the client build
+ * as-is. auth.server.ts side-effect-imports db/load-root-env.ts (dotenv + node:path.resolve at
+ * module scope) and the db adapters (better-sqlite3, mssql, pg); none of that failed a real
+ * `pnpm build`, because TanStack Start's import-protection plugin only rejects a *static*
+ * client-reachable import of '@tanstack/react-start/server' or a '*.server.*' file outright —
+ * it doesn't catch a plain module that merely behaves as server-only. Confirmed via a real
+ * browser (this repo's first real-browser test — every prior check across every sub-project
+ * used curl or jsdom, which never execute a real client bundle): `node:path.resolve` throws
+ * the instant that chunk evaluated client-side (Vite stubs `node:path` to throw on property
+ * access in browser builds), and that throw broke React's event delegation for the entire
+ * app — every onClick/onSubmit silently did nothing.
+ *
+ * Two independent layers now prevent this: the dynamic `import()` here means Vite only ever
+ * creates a separate async chunk for auth.server.ts, never requested client-side since nothing
+ * client-side calls this function; and the `.server.ts` suffix (renamed from `auth.ts`) means
+ * import-protection would now fail the *build* outright if a future static import of it ever
+ * became client-reachable again, rather than silently shipping the same hydration break.
  */
 export async function getSessionForHeaders(headers: Headers) {
-  const { auth } = await import('./auth')
+  const { auth } = await import('./auth.server')
   return auth.api.getSession({ headers })
 }
 
