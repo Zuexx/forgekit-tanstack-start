@@ -34,6 +34,8 @@ echo "==> App"
   pnpm lint:fsd
   pnpm test
   pnpm build
+  pnpm exec playwright install --with-deps chromium
+  pnpm test:e2e
 )
 
 echo "==> OpenSpec"
