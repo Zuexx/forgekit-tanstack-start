@@ -35,6 +35,7 @@ test.describe('locale routing', () => {
 
     await page.goto('/not-a-real-locale/dashboard')
 
+    await expect(page.getByText('Not Found')).toBeVisible()
     await expect(page.getByRole('heading', { name: /Welcome,/ })).not.toBeVisible()
   })
 })
