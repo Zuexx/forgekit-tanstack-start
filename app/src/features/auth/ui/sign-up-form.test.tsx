@@ -20,6 +20,9 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
   const actual = await importOriginal<typeof ReactRouter>()
   return { ...actual, useRouter: () => ({ navigate: vi.fn() }) }
 })
+vi.mock('#/shared/ui/theme-switcher', () => ({
+  ThemeSwitcher: () => <div data-testid="theme-switcher" />,
+}))
 
 function renderWithQuery() {
   const queryClient = new QueryClient()

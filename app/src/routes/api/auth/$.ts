@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { auth } from '#/shared/api/auth'
+import { auth } from '#/shared/api/auth.server'
 
 export const Route = createFileRoute('/api/auth/$')({
   server: {

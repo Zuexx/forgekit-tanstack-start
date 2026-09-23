@@ -18,16 +18,29 @@ function I18nProvider({ children }: { children: React.ReactNode }) {
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
 }
 
+const THEME_FLASH_PREVENTION_SCRIPT = `(function() {
+  try {
+    var stored = localStorage.getItem('forgekit-tanstack-start.theme');
+    var theme = stored === 'dark' || stored === 'light'
+      ? stored
+      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) {}
+})();`
+
 export function RootDocument({ children }: { children: React.ReactNode }) {
   const { locale } = useRouteContext({ from: '__root__' })
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <HeadContent />
         {import.meta.env.DEV && (
           <script type="module" src="/@id/virtual:stylex:runtime" />
         )}
+        <script dangerouslySetInnerHTML={{ __html: THEME_FLASH_PREVENTION_SCRIPT }} />
       </head>
       <body>
         <StateProvider>

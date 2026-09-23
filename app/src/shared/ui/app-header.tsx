@@ -7,6 +7,7 @@ import { useUI } from '#/shared/state'
 import { Button } from './button'
 import { LocaleSwitcher } from './locale-switcher'
 import { Separator } from './separator'
+import { ThemeSwitcher } from './theme-switcher'
 
 const styles = create({
   header: {
@@ -52,6 +53,7 @@ export function AppHeader() {
         {t('nav.dashboard')}
       </h1>
       <div className={spacerProps.className} style={spacerProps.style} />
+      <ThemeSwitcher />
       <LocaleSwitcher />
     </header>
   )

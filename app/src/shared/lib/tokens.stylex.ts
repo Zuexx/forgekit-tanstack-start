@@ -6,9 +6,8 @@ import * as stylex from "@stylexjs/stylex";
  * Each token wraps the corresponding CSS custom property defined in the app's
  * global stylesheet (e.g. `--primary`). Components reference `colors.primary`
  * / `radius.md` instead of stringly-typed `var(--primary)` so token usage is
- * typed and centralized. Note: dark-mode toggling (a `.dark` class variant of
- * these variables, e.g. via next-themes) isn't wired up yet — only the light
- * theme in `styles.css` is defined today.
+ * typed and centralized. Dark-mode toggling uses `.dark` class variants
+ * defined in `styles.css`, toggled by `shared/ui/theme-switcher.tsx`.
  */
 export const colors = stylex.defineConsts({
   accent: "var(--accent)",

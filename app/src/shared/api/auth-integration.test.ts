@@ -1,8 +1,14 @@
+// @vitest-environment node
+//
+// auth.server.ts is a '*.server.*' file — TanStack Start's import-protection Vite plugin
+// treats the default jsdom environment as client-reachable and replaces this module's exports
+// with mocks. Running under plain 'node' sidesteps that classification (same pattern already
+// used by require-session.test.ts and auth.test.ts).
 import { existsSync, rmSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 
-import type { auth as Auth } from './auth'
+import type { auth as Auth } from './auth.server'
 
 const TEST_DB_PATH = resolve(
   process.cwd(),
@@ -24,7 +30,7 @@ beforeAll(async () => {
   process.env.Database__Provider = 'Sqlite'
   vi.resetModules()
 
-  ;({ auth } = await import('./auth'))
+  ;({ auth } = await import('./auth.server'))
 
   // Better Auth's own migration path (its Kysely adapter creates tables from the plugin
   // set on first use in dev, but a fresh DB file needs the CLI's migration applied first

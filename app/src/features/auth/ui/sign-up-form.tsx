@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '#/shared/ui/card'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '#/shared/ui/field'
 import { Input } from '#/shared/ui/input'
 import { LocaleSwitcher } from '#/shared/ui/locale-switcher'
+import { ThemeSwitcher } from '#/shared/ui/theme-switcher'
 
 import { useSignUp } from '../model/use-sign-up'
 import { createSignUpSchema } from '../model/sign-up-schema'
@@ -31,6 +32,7 @@ export function SignUpForm() {
     <Card>
       <CardHeader>
         <CardTitle>{tAuth('signUp.title')}</CardTitle>
+        <ThemeSwitcher />
         <LocaleSwitcher />
       </CardHeader>
       <CardContent>

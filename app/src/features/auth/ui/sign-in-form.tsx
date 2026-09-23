@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '#/shared/ui/card'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '#/shared/ui/field'
 import { Input } from '#/shared/ui/input'
 import { LocaleSwitcher } from '#/shared/ui/locale-switcher'
+import { ThemeSwitcher } from '#/shared/ui/theme-switcher'
 
 import { useSignIn } from '../model/use-sign-in'
 import { useSocialSignIn } from '../model/use-social-sign-in'
@@ -33,6 +34,7 @@ export function SignInForm() {
     <Card>
       <CardHeader>
         <CardTitle>{tAuth('signIn.title')}</CardTitle>
+        <ThemeSwitcher />
         <LocaleSwitcher />
       </CardHeader>
       <CardContent>
