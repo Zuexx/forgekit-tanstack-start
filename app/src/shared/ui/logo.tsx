@@ -2,6 +2,7 @@ import { create, props as stylexProps } from '@stylexjs/stylex'
 import type { SVGProps } from 'react'
 
 import { colors } from '#/shared/lib/tokens.stylex'
+import { customClassName } from '#/shared/lib/utils.stylex'
 
 /**
  * Ported from forgekit's real components/logo.tsx. Uses `currentColor` on every
@@ -14,8 +15,8 @@ const styles = create({
   },
 })
 
-export function LogoMark({ style, ...props }: SVGProps<SVGSVGElement>) {
-  const markProps = stylexProps(styles.mark)
+export function LogoMark({ style, className, ...props }: SVGProps<SVGSVGElement>) {
+  const markProps = stylexProps(styles.mark, customClassName(className))
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -32,8 +33,8 @@ export function LogoMark({ style, ...props }: SVGProps<SVGSVGElement>) {
   )
 }
 
-export function Logo({ style, ...props }: SVGProps<SVGSVGElement>) {
-  const markProps = stylexProps(styles.mark)
+export function Logo({ style, className, ...props }: SVGProps<SVGSVGElement>) {
+  const markProps = stylexProps(styles.mark, customClassName(className))
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
