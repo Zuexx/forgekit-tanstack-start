@@ -74,7 +74,7 @@ export function SignInForm() {
           <FieldGroup>
             <Field>
               <Button type="button" variant="outline" onClick={socialSignIn.signIn}>
-                <LogoMark aria-hidden="true" />
+                <LogoMark aria-hidden="true" width={16} height={16} />
                 {tAuth('signIn.loginWithSSO')}
               </Button>
             </Field>
