@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { create, props as stylexProps } from '@stylexjs/stylex'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -7,13 +8,36 @@ import { Card, CardContent, CardHeader, CardTitle } from '#/shared/ui/card'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '#/shared/ui/field'
 import { Input } from '#/shared/ui/input'
 import { LocaleSwitcher } from '#/shared/ui/locale-switcher'
+import { Logo } from '#/shared/ui/logo'
 import { ThemeSwitcher } from '#/shared/ui/theme-switcher'
 
 import { useSignUp } from '../model/use-sign-up'
 import { createSignUpSchema } from '../model/sign-up-schema'
 import type { SignUpInput } from '../model/sign-up-schema'
 
+const styles = create({
+  header: {
+    position: 'relative',
+  },
+  switchers: {
+    alignItems: 'center',
+    display: 'flex',
+    gap: '0.5rem',
+    position: 'absolute',
+    right: '0.5rem',
+    top: '-1rem',
+    zIndex: 10,
+  },
+  logo: {
+    height: '3.5rem',
+    width: 'auto',
+  },
+})
+
 export function SignUpForm() {
+  const headerProps = stylexProps(styles.header)
+  const switchersProps = stylexProps(styles.switchers)
+  const logoProps = stylexProps(styles.logo)
   const signUp = useSignUp()
   const { t } = useTranslation('validation')
   const { t: tAuth } = useTranslation('auth')
@@ -30,10 +54,18 @@ export function SignUpForm() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={headerProps.className} style={headerProps.style}>
+        <div className={switchersProps.className} style={switchersProps.style}>
+          <ThemeSwitcher />
+          <LocaleSwitcher />
+        </div>
+        <Logo
+          className={logoProps.className}
+          style={logoProps.style}
+          role="img"
+          aria-label="App Logo"
+        />
         <CardTitle>{tAuth('signUp.title')}</CardTitle>
-        <ThemeSwitcher />
-        <LocaleSwitcher />
       </CardHeader>
       <CardContent>
         <form noValidate onSubmit={form.handleSubmit(onSubmit)}>

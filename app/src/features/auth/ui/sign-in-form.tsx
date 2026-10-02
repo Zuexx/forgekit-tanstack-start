@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { create, props as stylexProps } from '@stylexjs/stylex'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -7,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '#/shared/ui/card'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '#/shared/ui/field'
 import { Input } from '#/shared/ui/input'
 import { LocaleSwitcher } from '#/shared/ui/locale-switcher'
+import { Logo, LogoMark } from '#/shared/ui/logo'
 import { ThemeSwitcher } from '#/shared/ui/theme-switcher'
 
 import { useSignIn } from '../model/use-sign-in'
@@ -14,7 +16,29 @@ import { useSocialSignIn } from '../model/use-social-sign-in'
 import { createSignInSchema } from '../model/sign-in-schema'
 import type { SignInInput } from '../model/sign-in-schema'
 
+const styles = create({
+  header: {
+    position: 'relative',
+  },
+  switchers: {
+    alignItems: 'center',
+    display: 'flex',
+    gap: '0.5rem',
+    position: 'absolute',
+    right: '0.5rem',
+    top: '-1rem',
+    zIndex: 10,
+  },
+  logo: {
+    height: '3.5rem',
+    width: 'auto',
+  },
+})
+
 export function SignInForm() {
+  const headerProps = stylexProps(styles.header)
+  const switchersProps = stylexProps(styles.switchers)
+  const logoProps = stylexProps(styles.logo)
   const signIn = useSignIn()
   const socialSignIn = useSocialSignIn()
   const { t } = useTranslation('validation')
@@ -32,16 +56,25 @@ export function SignInForm() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={headerProps.className} style={headerProps.style}>
+        <div className={switchersProps.className} style={switchersProps.style}>
+          <ThemeSwitcher />
+          <LocaleSwitcher />
+        </div>
+        <Logo
+          className={logoProps.className}
+          style={logoProps.style}
+          role="img"
+          aria-label="App Logo"
+        />
         <CardTitle>{tAuth('signIn.title')}</CardTitle>
-        <ThemeSwitcher />
-        <LocaleSwitcher />
       </CardHeader>
       <CardContent>
         <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Field>
               <Button type="button" variant="outline" onClick={socialSignIn.signIn}>
+                <LogoMark aria-hidden="true" />
                 {tAuth('signIn.loginWithSSO')}
               </Button>
             </Field>
