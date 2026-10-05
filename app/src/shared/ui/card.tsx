@@ -40,7 +40,6 @@ const styles = stylex.create({
     flexDirection: "column",
     fontSize: "0.875rem",
     lineHeight: "1.25rem",
-    overflow: "hidden",
   },
   cardDefault: {
     gap: "var(--card-spacing, 1rem)",
