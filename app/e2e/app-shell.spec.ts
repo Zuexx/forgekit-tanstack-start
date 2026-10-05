@@ -28,7 +28,8 @@ test.describe('authenticated app shell', () => {
   test('signing out from the shell actually signs out', async ({ page }) => {
     await page.goto('/dashboard')
 
-    await page.getByRole('button', { name: 'Sign out' }).click()
+    await page.getByRole('button', { name: 'User menu' }).click()
+    await page.getByRole('menuitem', { name: 'Sign out' }).click()
 
     await expect(page).toHaveURL(/\/$/)
     await page.goto('/dashboard')

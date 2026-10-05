@@ -119,6 +119,7 @@ export function NavUser({ onSignOut }: NavUserProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
+        aria-label={t('nav.userMenu')}
         className={triggerProps.className}
         style={triggerProps.style}
       >

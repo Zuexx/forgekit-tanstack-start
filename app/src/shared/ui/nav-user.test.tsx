@@ -46,7 +46,7 @@ describe('NavUser', () => {
 
     renderNavUser(vi.fn())
 
-    expect(screen.getByRole('button', { name: /A Person/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /user menu/i })).toBeInTheDocument()
     expect(screen.getAllByText('A Person')[0]).toBeInTheDocument()
     expect(screen.getAllByText('a@example.com')[0]).toBeInTheDocument()
   })
@@ -58,7 +58,7 @@ describe('NavUser', () => {
     const onSignOut = vi.fn()
 
     renderNavUser(onSignOut)
-    await userEvent.click(screen.getByRole('button', { name: /A Person/ }))
+    await userEvent.click(screen.getByRole('button', { name: /user menu/i }))
     await userEvent.click(await screen.findByRole('menuitem', { name: /sign out/i }))
 
     expect(onSignOut).toHaveBeenCalledOnce()
