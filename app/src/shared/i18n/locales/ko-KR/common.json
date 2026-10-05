@@ -8,7 +8,8 @@
   "nav": {
     "dashboard": "대시보드",
     "signOut": "로그아웃",
-    "toggleSidebar": "사이드바 전환"
+    "toggleSidebar": "사이드바 전환",
+    "userMenu": "사용자 메뉴"
   },
   "dashboard": {
     "welcome": "환영합니다, {{name}}님"
