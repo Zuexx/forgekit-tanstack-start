@@ -8,7 +8,8 @@
   "nav": {
     "dashboard": "儀表板",
     "signOut": "登出",
-    "toggleSidebar": "切換側邊欄"
+    "toggleSidebar": "切換側邊欄",
+    "userMenu": "使用者選單"
   },
   "dashboard": {
     "welcome": "歡迎，{{name}}"

@@ -71,7 +71,8 @@ test.describe('auth flow', () => {
     await page.goto('/dashboard')
     await expect(page.getByRole('heading', { name: /Welcome,/ })).toBeVisible()
 
-    await page.getByRole('button', { name: 'Sign out' }).click()
+    await page.getByRole('button', { name: 'User menu' }).click()
+    await page.getByRole('menuitem', { name: 'Sign out' }).click()
     await expect(page).toHaveURL(/\/$/)
 
     await page.goto('/dashboard')
