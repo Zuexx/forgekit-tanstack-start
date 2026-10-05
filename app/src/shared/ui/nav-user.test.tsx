@@ -39,26 +39,27 @@ describe('NavUser', () => {
     expect(screen.queryByRole('button', { name: /sign out/i })).not.toBeInTheDocument()
   })
 
-  it('renders the signed-in user and a sign-out button', () => {
+  it('renders the signed-in user as the dropdown trigger', () => {
     mockUseUser.mockReturnValue({
       user: { email: 'a@example.com', id: '1', name: 'A Person' },
     })
 
     renderNavUser(vi.fn())
 
-    expect(screen.getByText('A Person')).toBeInTheDocument()
-    expect(screen.getByText('a@example.com')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /A Person/ })).toBeInTheDocument()
+    expect(screen.getAllByText('A Person')[0]).toBeInTheDocument()
+    expect(screen.getAllByText('a@example.com')[0]).toBeInTheDocument()
   })
 
-  it('calls onSignOut when the sign-out button is clicked', async () => {
+  it('calls onSignOut when the sign-out menu item is clicked', async () => {
     mockUseUser.mockReturnValue({
       user: { email: 'a@example.com', id: '1', name: 'A Person' },
     })
     const onSignOut = vi.fn()
 
     renderNavUser(onSignOut)
-    await userEvent.click(screen.getByRole('button', { name: /sign out/i }))
+    await userEvent.click(screen.getByRole('button', { name: /A Person/ }))
+    await userEvent.click(await screen.findByRole('menuitem', { name: /sign out/i }))
 
     expect(onSignOut).toHaveBeenCalledOnce()
   })
