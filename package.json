@@ -6,7 +6,7 @@
     "node": ">=22.16",
     "pnpm": ">=11"
   },
-  "forgekit": {
+  "workflow": {
     "sourceGlobs": ["*.cs", "*.ts", "*.tsx", "*.js", "*.jsx", "*.mjs", "*.cjs", "*.mts", "*.cts"],
     "requiredTools": ["dotnet"],
     "nodeSubprojects": ["app"]
