@@ -40,6 +40,14 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.12" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+    <!--
+      Pinned to 3.x even though Microsoft.AspNetCore.OpenApi 10.0.12 itself declares
+      ">= 2.12.0 && < 3.0.0" (hence the NU1608 warning on every restore/build). Checked
+      Scalar.AspNetCore's own package metadata: it declares no NuGet dependency on
+      Microsoft.OpenApi at all for net10.0, so it is not what forces this override. This pin
+      is inherited as-is from upstream forgekit's Directory.Packages.props, and the exact
+      reason it was set to 3.x isn't recorded there either.
+    -->
     <PackageVersion Include="Microsoft.OpenApi" Version="3.10.2" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
