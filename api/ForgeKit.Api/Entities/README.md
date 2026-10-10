@@ -193,11 +193,12 @@ Workspace
 
 ### Soft-Delete Global Filters
 
-```csharp
-modelBuilder.Entity<TodoItem>().HasQueryFilter(e => !e.IsDeleted);
-modelBuilder.Entity<Workspace>().HasQueryFilter(e => !e.IsDeleted);
-// ... applied to all BaseEntity subclasses
-```
+`AppDbContext` has no per-entity `HasQueryFilter` calls. Its base class,
+[`PlatformDbContext.ApplySoftDeleteFilters`](../../Anvil/Data/PlatformDbContext.cs), walks every
+entity type in the model by reflection and applies `HasQueryFilter(e => !e.IsDeleted)` to any
+type implementing `ISoftDelete`. An entity gains the filter automatically by implementing the
+interface — there is nothing to remember to add in `AppDbContext`, and nothing to keep in sync
+when a new entity is added.
 
 To include deleted records:
 
@@ -210,7 +211,17 @@ var allItems = await context.TodoItems
 
 ### Audit Tracking
 
-`SaveChangesAsync(string userId)` on `AppDbContext` automatically sets `CreatedBy`, `UpdatedBy`, `CreatedAt`, `UpdatedAt` on all tracked entities.
+`AppDbContext` does not override `SaveChanges`/`SaveChangesAsync` itself; `PlatformDbContext`
+does, and `SaveChangesAsync` only takes a `CancellationToken` — there is no `userId` parameter.
+Its private `UpdateAuditFields` (see
+[`PlatformDbContext.cs`](../../Anvil/Data/PlatformDbContext.cs)) stamps `CreatedAt`/`UpdatedAt`
+and increments `Version` on every tracked entity implementing `IAuditableEntity`, on every
+`SaveChanges`/`SaveChangesAsync` call.
+
+`CreatedBy`/`UpdatedBy` are **not** set there — `PlatformDbContext`'s own code comment is explicit
+that they are "set by the application layer, not here." Setting them is the caller's
+responsibility (e.g. a command handler assigning the current user's id to the entity before
+`SaveChangesAsync`), not something this `DbContext` does automatically.
 
 ### Usage Examples
 
