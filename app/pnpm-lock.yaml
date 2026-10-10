@@ -21,10 +21,10 @@ importers:
         specifier: ^5.103.1
         version: 5.103.1(react@19.3.0)
       '@tanstack/react-router':
-        specifier: latest
+        specifier: ^1.170.36
         version: 1.170.36(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@tanstack/react-start':
-        specifier: latest
+        specifier: ^1.168.54
         version: 1.168.54(esbuild@0.28.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rolldown@1.2.9)(vite@8.3.0(@types/node@22.20.3)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15))
       '@tanstack/react-table':
         specifier: ^9.2.4
@@ -97,7 +97,7 @@ importers:
         specifier: 0.19.1
         version: 0.19.1(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.9)(vite@8.3.0(@types/node@22.20.3)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)))
       '@tanstack/eslint-config':
-        specifier: latest
+        specifier: ^0.4.0
         version: 0.4.0(@typescript-eslint/utils@8.70.0(eslint@9.39.5(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.5(jiti@2.7.0))(typescript@6.0.3)
       '@tanstack/react-query-devtools':
         specifier: ^5.103.1
