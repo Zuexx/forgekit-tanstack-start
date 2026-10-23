@@ -48,7 +48,7 @@
       is inherited as-is from upstream forgekit's Directory.Packages.props, and the exact
       reason it was set to 3.x isn't recorded there either.
     -->
-    <PackageVersion Include="Microsoft.OpenApi" Version="3.10.2" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="3.11.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
