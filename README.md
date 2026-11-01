@@ -65,6 +65,18 @@ Neither side requires an external database to start — both default to a shared
 PostgreSQL and SQL Server are opt-in for both sides together, switched with a single setting
 (`Database__Provider` in a repository-root `.env`, copied from `.env.example`).
 
+**Windows:** the Better Auth skills in `.claude/skills/` are symlinks, which Git for Windows
+checks out as plain text files unless symlinks are enabled; Claude Code then skips those skills
+without an error. Before cloning, turn on Developer Mode (Settings → System → For developers)
+and run `git config --global core.symlinks true`. In a clone that already exists, recreate the
+links in place:
+
+```bash
+git config core.symlinks true
+git ls-files -s | awk '$1 == "120000" { print $4 }' | xargs rm -f
+git checkout -- .claude/skills
+```
+
 ### API
 
 ```bash
