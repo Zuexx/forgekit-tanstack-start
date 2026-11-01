@@ -31,7 +31,8 @@ The grill skills are vendored as plain files under `.claude/skills/` and recorde
 `skills-lock.json`, so a fork carries them into every product. Update with
 `npx skills update -p`. Only these are installed: `grilling`, `grill-me`, `grill-with-docs`,
 `domain-modeling`, `to-spec`, `setup-matt-pocock-skills`. The rest of that collection (`tdd`,
-`code-review`, `diagnosing-bugs`, ...) overlaps pstack and is left out on purpose — two skills competing for one trigger is the problem this setup replaced.
+`code-review`, `diagnosing-bugs`, ...) overlaps pstack and is left out on purpose — two
+skills competing for one trigger is the problem this setup replaced.
 
 ## Which route
 
