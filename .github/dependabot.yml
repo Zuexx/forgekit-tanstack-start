@@ -1,25 +1,12 @@
 version: 2
 
-# The workflow tooling tracks the newest release its version policy permits, and nobody
-# remembers to check. A bump here can change whether openspec/config.yaml still yields its
-# rules, which nothing in CI would notice — run `pnpm preflight` before merging one.
+# Monthly and grouped: this is a starter that products fork and then upgrade on their own
+# schedule, so keeping every patch current here buys little and costs a PR stream.
 updates:
-  - package-ecosystem: npm
-    directory: /
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 3
-    commit-message:
-      prefix: chore(deps)
-    groups:
-      workflow-tooling:
-        patterns:
-          - "*"
-
   - package-ecosystem: npm
     directory: /app
     schedule:
-      interval: weekly
+      interval: monthly
     open-pull-requests-limit: 5
     commit-message:
       prefix: chore(deps)
@@ -32,10 +19,14 @@ updates:
   - package-ecosystem: nuget
     directory: /api
     schedule:
-      interval: weekly
+      interval: monthly
     open-pull-requests-limit: 5
     commit-message:
       prefix: chore(deps)
+    groups:
+      # Minors and patches in one PR; a major still arrives on its own for review.
+      nuget-minor-and-patch:
+        update-types: [minor, patch]
 
   - package-ecosystem: github-actions
     directory: /
