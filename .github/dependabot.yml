@@ -10,6 +10,13 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: chore(deps)
+    ignore:
+      # Majors held until the toolchain supports them. typescript-eslint does not support
+      # TypeScript 7 yet (CI fails at lint); ESLint 10 moves with it. Revisit both together.
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      - dependency-name: eslint
+        update-types: [version-update:semver-major]
     groups:
       dev-dependencies:
         dependency-type: development
@@ -23,6 +30,11 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: chore(deps)
+    ignore:
+      # Must stay on the major Microsoft.AspNetCore.OpenApi is built against; it moves with
+      # the .NET 11 upgrade (#94). See the comment in api/Directory.Packages.props.
+      - dependency-name: Microsoft.OpenApi
+        update-types: [version-update:semver-major]
     groups:
       # Minors and patches in one PR; a major still arrives on its own for review.
       nuget-minor-and-patch:
