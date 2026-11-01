@@ -48,8 +48,11 @@ debug.log
 /api/.vs
 
 # --- AI tooling (local only, never committed) ---
-# CodeGraph local symbol index — regenerate with `pnpm exec codegraph index`
+# CodeGraph local symbol index, for anyone who indexes the repo with a global install
 .codegraph/
+
+# verify-forgekit-tanstack runs (databases, logs, evidence)
+.verify/
 
 # --- OS & System ---
 .DS_Store

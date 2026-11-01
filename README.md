@@ -94,19 +94,20 @@ pnpm verify
 ```
 
 Runs the full local/CI gate: API build + test, app `check`/`lint`/`lint:fsd`/`test`/`build`,
-OpenSpec validation, and a secret scan. See [`scripts/verify.sh`](scripts/verify.sh).
+end-to-end tests, and a secret scan. See [`scripts/verify.sh`](scripts/verify.sh).
 
 ## Documentation
 
 - [`docs/ANVIL_SYNC.md`](docs/ANVIL_SYNC.md) — syncing `api/Anvil/` from `forgekit`
 - [`api/README.md`](api/README.md) — API setup and structure
 - [`app/README.md`](app/README.md) — frontend setup and structure
-- [`openspec/`](openspec/) — spec-driven change proposals and the project's context/conventions
+- [`AGENTS.md`](AGENTS.md) — conventions for anyone (or any agent) changing this repo
+- [`docs/AI_WORKFLOW.md`](docs/AI_WORKFLOW.md) — the AI workflow: pstack, the grill skills, verify-forgekit-tanstack
 
 ## Relationship to `forgekit`
 
 This repo shares `forgekit`'s backend conventions (module + feature pattern, soft delete,
-the Result pattern, EF Core over repositories) and its spec-driven workflow, forked from
+the Result pattern, EF Core over repositories) and its AI workflow, forked from
 `forgekit`'s `api/Anvil/` layer. It diverges on the frontend: TanStack Start + StyleX instead
 of Next.js + Tailwind, since the two starters target different frontend preferences while
 staying interchangeable on the backend.
