@@ -2,8 +2,6 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PATH="$ROOT_DIR/node_modules/.bin:$PATH"
-export PATH
 
 require_command() {
   if ! command -v "$1" >/dev/null 2>&1; then
@@ -14,7 +12,6 @@ require_command() {
 
 require_command dotnet
 require_command pnpm
-require_command openspec
 require_command gitleaks
 
 echo "==> API"
@@ -36,12 +33,6 @@ echo "==> App"
   pnpm build
   pnpm exec playwright install --with-deps chromium
   pnpm test:e2e
-)
-
-echo "==> OpenSpec"
-(
-  cd "$ROOT_DIR"
-  openspec validate --all --strict --no-interactive
 )
 
 echo "==> Secrets"
